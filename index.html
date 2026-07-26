@@ -36,8 +36,9 @@ button{cursor:pointer;border:none;background:none;font-size:13px}
 .brand{display:flex;align-items:center;gap:12px}
 .aon-logo{color:var(--aon-red);font-weight:900;font-size:20px;letter-spacing:-.02em;line-height:1}
 .brand-divider{width:1px;height:22px;background:var(--line)}
-.brand-title{font-weight:600;font-size:14px}
-.brand-title small{display:block;font-weight:400;font-size:11px;color:var(--ink-3);margin-top:1px}
+.brand-title{font-weight:600;font-size:14px;white-space:nowrap;display:flex;align-items:baseline;gap:8px}
+.brand-title small{font-weight:400;font-size:11px;color:var(--ink-3);white-space:nowrap}
+.brand-title small::before{content:"·";color:var(--ink-4);margin-right:6px}
 .spacer{flex:1}
 .top-actions{display:flex;gap:6px;align-items:center}
 .btn{border:1px solid var(--line);border-radius:var(--radius);padding:7px 14px;font-size:12px;
@@ -58,6 +59,38 @@ button{cursor:pointer;border:none;background:none;font-size:13px}
 .subnav-status{margin-left:auto;font-size:11px;color:var(--ink-3);display:flex;align-items:center;gap:6px}
 .dot{width:6px;height:6px;border-radius:50%;background:var(--rn-g)}
 .dot.demo{background:var(--rn-y)}
+/* Header utility buttons (Notes & Actions, Frameworks) — right side of subnav */
+.tab-util{background:transparent;border:none;padding:6px 10px;font-size:12px;color:var(--ink-3);
+  border-radius:4px;font-weight:500;cursor:pointer;font-family:inherit;display:inline-flex;
+  align-items:center;gap:6px;transition:all .12s}
+.tab-util:hover{background:var(--bg-2);color:var(--ink)}
+.tab-util.active{background:var(--ink);color:#fff}
+
+/* Sub-nav within a view — for Overview (Summary + Analytics) and Pipeline (Table + Explore by role) */
+.view-subnav{display:flex;align-items:center;gap:2px;background:var(--bg-2);border-radius:99px;
+  padding:3px;margin-bottom:20px;width:fit-content}
+.view-subnav .sub-tab{padding:7px 16px;background:transparent;border:none;border-radius:99px;
+  font-size:12.5px;color:var(--ink-2);font-weight:500;cursor:pointer;font-family:inherit;transition:all .12s}
+.view-subnav .sub-tab:hover:not(.active){color:var(--ink);background:rgba(255,255,255,.5)}
+.view-subnav .sub-tab.active{background:#fff;color:var(--ink);font-weight:600;box-shadow:0 1px 3px rgba(0,0,0,.08)}
+
+/* Slide-out side panels (Notes & Actions, Frameworks) — replace the corresponding old full-page tabs */
+.side-panel{position:fixed;top:0;right:0;bottom:0;width:min(720px, 92vw);background:#fff;
+  z-index:900;box-shadow:-12px 0 40px rgba(0,0,0,.15);transform:translateX(100%);
+  transition:transform .28s cubic-bezier(.22,1,.36,1);display:flex;flex-direction:column;overflow:hidden}
+.side-panel.open{transform:translateX(0)}
+.side-panel .sp-hd{padding:18px 24px;border-bottom:1px solid var(--line);display:flex;
+  align-items:center;justify-content:space-between;gap:12px;flex-shrink:0}
+.side-panel .sp-hd h2{font-size:16px;font-weight:600;letter-spacing:-.01em}
+.side-panel .sp-hd .sp-sub{font-size:11px;color:var(--ink-3);margin-top:2px}
+.side-panel .sp-close{background:transparent;border:none;color:var(--ink-3);font-size:20px;
+  padding:4px 8px;cursor:pointer;line-height:1;border-radius:4px}
+.side-panel .sp-close:hover{color:var(--ink);background:var(--bg-2)}
+.side-panel .sp-body{flex:1;overflow-y:auto;padding:20px 24px}
+/* Backdrop when a side panel is open */
+.side-panel-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.35);z-index:899;
+  opacity:0;pointer-events:none;transition:opacity .2s}
+.side-panel-backdrop.open{opacity:1;pointer-events:auto}
 
 /* ---------- Layout ---------- */
 main{padding:24px 32px 60px;max-width:1600px;margin:0 auto}
@@ -400,22 +433,31 @@ main{padding:24px 32px 60px;max-width:1600px;margin:0 auto}
 .crt-compare-btn:hover{background:var(--navy);color:#fff;border-color:var(--navy)}
 /* Compact fit-derived readiness label under card */
 .succ-fit-derived{font-size:9px;color:rgba(255,255,255,.75);text-align:center;margin-top:2px;font-style:italic}
+/* FLIP animation base — cards use transform for smooth reorder; set will-change to hint GPU */
+.succ-card[data-flip-key]{will-change:transform}
 .succ-card.r1 .succ-fit-derived{color:rgba(0,0,0,.6)}
 .crt-incumbent b{color:var(--ink-2);font-weight:600}
-/* Info tooltip — small (i) with hover-triggered dark tooltip */
+/* Info tooltip — small (i) with hover-triggered dark tooltip.
+   The tooltip body is rendered inline in the source, then re-parented to a
+   fixed-position floating layer at hover time by _positionInfoTip() below.
+   This escapes any overflow:hidden / stacking-context clipping issues. */
 .info-tip{display:inline-flex;position:relative;cursor:help;color:var(--ink-3);font-size:9px;
   width:13px;height:13px;background:var(--line-2);border-radius:50%;align-items:center;justify-content:center;
   font-weight:700;margin-left:4px;font-style:italic;font-family:Georgia,serif;vertical-align:middle}
 .info-tip:hover{background:var(--ink-3);color:#fff}
-.info-tip .info-tip-body{display:none;position:absolute;bottom:calc(100% + 8px);left:50%;transform:translateX(-50%);
-  background:#0B0B0B;color:#fff;padding:10px 12px;border-radius:5px;font-size:11px;font-weight:400;
-  width:260px;line-height:1.5;z-index:9999;text-transform:none;letter-spacing:0;text-align:left;
-  font-family:"Helvetica Now Text","Helvetica Neue",sans-serif;font-style:normal;pointer-events:none;
-  box-shadow:0 6px 18px rgba(0,0,0,.25)}
-.info-tip:hover .info-tip-body{display:block}
-.info-tip .info-tip-body::after{content:"";position:absolute;top:100%;left:50%;transform:translateX(-50%);
+.info-tip .info-tip-body{display:none}
+/* Floating layer that hosts the currently-visible tooltip. Rendered via JS. */
+.info-tip-floating{position:fixed;background:#0B0B0B;color:#fff;padding:10px 12px;border-radius:5px;
+  font-size:11px;font-weight:400;width:260px;line-height:1.5;z-index:99999;text-transform:none;
+  letter-spacing:0;text-align:left;font-family:"Helvetica Now Text","Helvetica Neue",sans-serif;
+  font-style:normal;pointer-events:none;box-shadow:0 6px 18px rgba(0,0,0,.25);opacity:0;
+  transition:opacity .12s;transform:translateX(-50%)}
+.info-tip-floating.visible{opacity:1}
+.info-tip-floating.tip-above::after{content:"";position:absolute;top:100%;left:50%;transform:translateX(-50%);
   border:5px solid transparent;border-top-color:#0B0B0B}
-.info-tip .info-tip-body b{color:#fff;font-weight:600}
+.info-tip-floating.tip-below::after{content:"";position:absolute;bottom:100%;left:50%;transform:translateX(-50%);
+  border:5px solid transparent;border-bottom-color:#0B0B0B}
+.info-tip-floating b{color:#fff;font-weight:600}
 /* Incumbent chip row inside role cell */
 .crt-role-meta{display:flex;align-items:center;gap:8px;margin-top:5px;flex-wrap:wrap}
 .crt-role-meta .role-fam{font-size:10.5px;color:var(--ink-3);font-weight:500;display:inline-flex;align-items:center;gap:5px}
@@ -724,6 +766,42 @@ main{padding:24px 32px 60px;max-width:1600px;margin:0 auto}
 .lv-search{width:100%;border:1px solid var(--line);border-radius:3px;padding:8px 12px;font-size:12px}
 
 /* ---------- Leader Profile (v3, premium) ---------- */
+/* Slim hero (v4) — minimal cover; 9-box is the anchor visual */
+.lp-hero-slim{background:linear-gradient(135deg,var(--navy) 0%,#0F2A4D 50%,var(--navy) 100%);
+  color:#fff;padding:20px 32px;position:relative;overflow:hidden}
+.lp-hero-slim::before{content:"";position:absolute;top:-20%;right:-8%;width:200px;height:200px;
+  background:radial-gradient(circle,rgba(43,123,229,.22) 0%,transparent 60%)}
+.lp-hero-inner-slim{position:relative;display:grid;grid-template-columns:auto 1fr auto;gap:18px;
+  align-items:center;max-width:100%}
+.lp-avatar-sm{width:56px;height:56px;border-radius:8px;
+  background:linear-gradient(135deg,#4B90DE,var(--steel));color:#fff;
+  display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:600;letter-spacing:-.02em;
+  box-shadow:0 4px 12px rgba(0,0,0,.25);border:2px solid rgba(255,255,255,.15);flex-shrink:0}
+.lp-hero-id{min-width:0}
+.lp-hero-id .lp-name{font-size:22px;font-weight:600;letter-spacing:-.02em;line-height:1.15;color:#fff}
+.lp-hero-id .lp-role-sm{font-size:12.5px;opacity:.82;margin-top:2px;color:#fff}
+/* Prominent 9-box in hero — the anchor visual */
+.lp-hero-9box{background:rgba(255,255,255,.08);border-radius:8px;padding:12px 16px;
+  backdrop-filter:blur(10px);min-width:230px}
+.lp-hero-9box .lp9-hd{font-size:9.5px;text-transform:uppercase;letter-spacing:.1em;color:rgba(255,255,255,.7);
+  font-weight:600;margin-bottom:8px;display:flex;align-items:center;gap:8px;justify-content:space-between}
+.lp-hero-9box .lp9-hd-zone{color:#fff;font-size:11px;font-weight:700;letter-spacing:0;text-transform:none}
+.lp-hero-9box .lp9-frame{display:grid;grid-template-columns:auto 1fr;grid-template-rows:1fr auto;
+  grid-template-areas:"yax grid" ".   xax";gap:6px;align-items:center}
+.lp-hero-9box .lp9-yax{grid-area:yax;writing-mode:vertical-rl;transform:rotate(180deg);
+  font-size:9px;font-weight:600;color:rgba(255,255,255,.65);letter-spacing:.08em;text-transform:uppercase;
+  text-align:center;padding:2px 0;display:flex;align-items:center;justify-content:center}
+.lp-hero-9box .lp9-yax::before{content:"↑ ";font-size:11px;color:rgba(255,255,255,.5)}
+.lp-hero-9box .lp9-xax{grid-area:xax;font-size:9px;font-weight:600;color:rgba(255,255,255,.65);
+  letter-spacing:.08em;text-transform:uppercase;text-align:center;padding-top:4px}
+.lp-hero-9box .lp9-xax::after{content:" →";font-size:11px;color:rgba(255,255,255,.5)}
+.lp-hero-9box .lp9-grid{grid-area:grid;display:grid;grid-template-columns:repeat(3,1fr);gap:3px;
+  width:140px;aspect-ratio:1/1}
+.lp-hero-9box .lp9-cell{border-radius:3px;display:flex;align-items:center;justify-content:center;
+  font-size:11px;font-weight:700;color:#fff}
+.lp-hero-9box .lp9-cell.here{box-shadow:0 0 0 2px #fff,0 3px 8px rgba(0,0,0,.4);z-index:2;position:relative}
+.lp-hero-9box .lp9-star{color:#fff;font-size:14px;text-shadow:0 1px 2px rgba(0,0,0,.4)}
+/* Original hero — kept for compat but no longer used by profile */
 .lp-hero{background:linear-gradient(135deg,var(--navy) 0%,#0F2A4D 50%,var(--navy) 100%);
   color:#fff;padding:32px;position:relative;overflow:hidden}
 .lp-hero::before{content:"";position:absolute;top:-30%;right:-10%;width:280px;height:280px;
@@ -801,6 +879,15 @@ main{padding:24px 32px 60px;max-width:1600px;margin:0 auto}
 .lp-target-tbl tr:last-child td{border-bottom:none}
 .lp-target-tbl td b{color:var(--ink);font-weight:600}
 .lp-target-tbl .pill{display:inline-block;padding:3px 10px;border-radius:11px;font-size:11px;font-weight:600}
+.lp-target-tbl th.center,.lp-target-tbl td.center{text-align:center}
+/* Inline Fit picker within the Target Roles table on Leader Profile — mirrors Pipeline capture */
+.lp-fit-inline{display:inline-flex;gap:3px;align-items:center;justify-content:center}
+.lp-fit-inline .lp-fit-btn{padding:4px 10px;border:1px solid var(--line);background:#fff;
+  font-size:10px;font-weight:700;color:var(--ink-2);cursor:pointer;border-radius:3px;
+  font-family:inherit;letter-spacing:.04em;text-transform:uppercase;transition:all .12s;min-width:30px}
+.lp-fit-inline .lp-fit-btn:hover{border-color:var(--ink-3);color:var(--ink)}
+.lp-fit-inline .lp-fit-btn.active{background:var(--ink);color:#fff;border-color:var(--ink);
+  box-shadow:0 1px 3px rgba(0,0,0,.15)}
 .lp-target-tbl .pill.rn-g{background:rgba(107,201,166,.18);color:#1F7A5C}
 .lp-target-tbl .pill.rn-y{background:rgba(245,206,62,.18);color:#8A6B00}
 .lp-target-tbl .pill.rn-o{background:rgba(245,164,90,.18);color:#7A3F0F}
@@ -819,8 +906,34 @@ main{padding:24px 32px 60px;max-width:1600px;margin:0 auto}
 .lp-persona-hero .pk{font-size:9px;text-transform:uppercase;letter-spacing:.12em;
   color:rgba(255,255,255,.6);font-weight:600}
 .lp-persona-hero .pv{font-size:13px;font-weight:600;letter-spacing:-.01em;margin-top:4px;color:#fff}
-/* Leadership Snapshot band — Persona + 9-Box + PMP trajectory */
+/* Compact toolbar below the slim hero — hosts DQ badge, Compare button, top-line verdicts */
+.lp-hero-toolbar{display:flex;align-items:center;justify-content:space-between;gap:16px;
+  padding:12px 28px;background:#F7F8F9;border-bottom:1px solid var(--line);flex-wrap:wrap}
+.lp-tb-tags{display:flex;align-items:center;gap:10px;flex-wrap:wrap;flex:1;min-width:0}
+.lp-tb-tag{font-size:11px;font-weight:500;padding:5px 12px;border-radius:99px;background:#fff;
+  border:1px solid var(--line);color:var(--ink-2);white-space:nowrap}
+.lp-tb-tag b{font-weight:700;color:var(--ink);margin-left:2px}
+.lp-tb-tag.g{background:var(--rn-g-tint);border-color:transparent;color:#1F7A5C}
+.lp-tb-tag.g b{color:#1F7A5C}
+.lp-tb-tag.y{background:var(--rn-y-tint);border-color:transparent;color:#8A6B00}
+.lp-tb-tag.y b{color:#8A6B00}
+.lp-tb-tag.o{background:var(--rn-o-tint);border-color:transparent;color:#7A3F0F}
+.lp-tb-tag.o b{color:#7A3F0F}
+.lp-tb-tag.r{background:var(--rn-r-tint);border-color:transparent;color:#B32B2E}
+.lp-tb-tag.r b{color:#B32B2E}
+.lp-tb-tag.rag-g{background:var(--rn-g-tint);border-color:transparent;color:#1F7A5C}
+.lp-tb-tag.rag-g b{color:#1F7A5C}
+.lp-tb-tag.rag-y{background:var(--rn-y-tint);border-color:transparent;color:#8A6B00}
+.lp-tb-tag.rag-y b{color:#8A6B00}
+.lp-tb-tag.rag-o{background:var(--rn-o-tint);border-color:transparent;color:#7A3F0F}
+.lp-tb-tag.rag-o b{color:#7A3F0F}
+.lp-tb-tag.rag-r{background:var(--rn-r-tint);border-color:transparent;color:#B32B2E}
+.lp-tb-tag.rag-r b{color:#B32B2E}
+.lp-hero-toolbar .dq-badge{background:#fff;border:1px solid var(--line)}
+.lp-tb-actions{display:flex;gap:8px}
+/* Leadership Snapshot band — Persona + PMP trajectory (9-Box moved to hero) */
 .lp-snap-band{display:grid;grid-template-columns:1.4fr 1fr 1.2fr;gap:14px;margin-bottom:24px}
+.lp-snap-band.two-col{grid-template-columns:1.3fr 1fr}
 .lp-snap-card{background:#fff;border:1px solid var(--line);border-radius:8px;padding:18px 20px;
   position:relative;overflow:visible}
 .lp-snap-card .lsc-lbl{font-size:10px;color:var(--ink-3);text-transform:uppercase;letter-spacing:.08em;
@@ -1127,15 +1240,11 @@ textarea{min-height:60px;resize:vertical}
 .vm-btn{padding:5px 12px;border-radius:99px;font-size:11px;background:transparent;
   color:var(--ink-2);border:none;font-weight:500;cursor:pointer;line-height:1;transition:all .12s}
 .vm-btn.active{background:var(--ink);color:#fff}
-body.chairman-mode .tab[data-view="group"],
-body.chairman-mode .tab[data-view="actions"]{display:none}
 body.chairman-mode .hide-in-chairman{display:none!important}
-/* CXO mode — hide 5 tabs (Executive Summary, Critical Roles, Retention, Cohort, Notes) */
-body.cxo-mode .tab[data-view="executive"],
-body.cxo-mode .tab[data-view="roles"],
-body.cxo-mode .tab[data-view="retention"],
-body.cxo-mode .tab[data-view="group"],
-body.cxo-mode .tab[data-view="actions"]{display:none}
+/* CXO mode — hide the Chairman-level Exec Summary tab (which includes cohort analytics) */
+body.cxo-mode .tab[data-view="executive"]{display:none}
+/* Also hide the Analytics sub-tab in CXO mode (CXOs are scoped to their BU/function) */
+body.cxo-mode .exec-subnav .exec-sub-tab[data-sub="analytics"]{display:none}
 /* CXO scope banner — shows what BU/family the CXO is scoped to */
 .scope-banner{display:none;background:linear-gradient(90deg,#0A3661 0%,#153C6D 100%);color:#fff;
   padding:8px 20px;font-size:12px;font-weight:600;letter-spacing:.02em;
@@ -1519,27 +1628,6 @@ body.has-fullscreen .fs-nav-bar{display:flex}
 .wi-banner .wi-delta{font-size:12px;color:var(--ink-2);margin-left:12px}
 .wi-select{border:1px solid var(--line);border-radius:3px;padding:5px 8px;font-size:11px;font-family:inherit;background:#fff;max-width:100%}
 
-/* ---------- Story mode ---------- */
-.story-bar{position:fixed;bottom:0;left:0;right:0;background:var(--navy);color:#fff;
-  padding:16px 24px;z-index:900;display:none;box-shadow:0 -6px 24px rgba(0,0,0,.2);align-items:center;gap:16px}
-.story-bar.active{display:flex}
-body.story-mode main{padding-bottom:110px}
-.story-progress{flex:1;display:flex;flex-direction:column;gap:6px}
-.story-progress-bar{height:4px;background:rgba(255,255,255,.15);border-radius:99px;overflow:hidden}
-.story-progress-bar-fill{height:100%;background:var(--rn-y);transition:width .3s;border-radius:99px}
-.story-step{display:flex;align-items:baseline;gap:12px}
-.story-num{font-size:11px;color:rgba(255,255,255,.6);font-weight:600;letter-spacing:.06em;text-transform:uppercase}
-.story-title{font-size:14px;font-weight:600}
-.story-desc{font-size:12px;color:rgba(255,255,255,.75);margin-top:2px}
-.story-nav{display:flex;gap:6px}
-.story-btn{background:rgba(255,255,255,.1);color:#fff;border:1px solid rgba(255,255,255,.2);border-radius:4px;padding:8px 14px;font-size:12px;font-weight:500}
-.story-btn:hover{background:rgba(255,255,255,.18)}
-.story-btn:disabled{opacity:.4;cursor:not-allowed}
-.story-btn.primary{background:var(--rn-y);color:#5A4400;border-color:var(--rn-y);font-weight:600}
-.story-btn.primary:hover{background:#F6D664}
-.story-btn.close{background:transparent;color:rgba(255,255,255,.6);border-color:transparent}
-.story-btn.close:hover{color:#fff;background:rgba(255,255,255,.1)}
-
 /* ---------- Data quality ---------- */
 .dq-badge{display:inline-flex;align-items:center;gap:5px;padding:3px 8px;border-radius:99px;font-size:10px;font-weight:600;background:var(--bg-3);color:var(--ink-2)}
 .dq-badge.partial{background:var(--rn-y-tint);color:#8A6B00}
@@ -1552,8 +1640,8 @@ body.story-mode main{padding-bottom:110px}
 @media print {
   body{background:#fff;font-size:11px}
   .topbar,.subnav,.filter-bar,.f-drop,.f-menu,.mini-filter,.expand-btn,
-  .story-bar,.rv-controls,.pipeline-sort,.crt-hd .pipeline-sort,
-  .lp-coll:not(.open) .lp-coll-body{display:none!important}
+  .rv-controls,.pipeline-sort,.crt-hd .pipeline-sort,
+  .lp-coll:not(.open) .lp-coll-body,.side-panel{display:none!important}
   .view{display:block!important;page-break-after:always}
   .view.active{display:block!important}
   .lp-hero{color:#000!important;background:#f4f5f6!important}
@@ -1575,9 +1663,7 @@ body.story-mode main{padding-bottom:110px}
   <div class="brand">
     <span class="aon-logo">AON</span>
     <div class="brand-divider"></div>
-    <div class="brand-title">GMR Talent Review
-      <small>GMR TRSP Programme · <span style="color:var(--aon-red);font-weight:600">Talent Review Tool</span></small>
-    </div>
+    <div class="brand-title">GMR Talent Review<small>TRSP Programme &middot; <span style="color:var(--aon-red);font-weight:600">Talent Review Tool</span></small></div>
   </div>
   <div class="spacer"></div>
   <div class="top-actions">
@@ -1600,7 +1686,6 @@ body.story-mode main{padding-bottom:110px}
     </select>
     <button class="btn btn-ghost" onclick="downloadTemplate()">Download template</button>
     <button class="btn" onclick="openUpload()">Upload data</button>
-    <button class="btn" onclick="startStoryMode()" title="Guided walk-through"><span style="margin-right:4px">▶</span>Story mode</button>
     <button class="btn" onclick="printReport()" title="Print or save as PDF">Print / PDF</button>
     <div class="ws-session-block">
       <span class="ws-lbl">Session:</span>
@@ -1626,17 +1711,21 @@ body.story-mode main{padding-bottom:110px}
 <div class="subnav">
   <button class="tab active" data-view="executive" onclick="switchView('executive')"><svg class="ico tab-icon" viewBox="0 0 24 24" style="fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2h-4a2 2 0 0 1-2-2v-5h-2v5a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>Executive Summary</button>
   <button class="tab" data-view="succession" onclick="switchView('succession')">Pipeline</button>
-  <button class="tab" data-view="roles" onclick="switchView('roles')">Critical Roles</button>
   <button class="tab" data-view="leaders" onclick="switchView('leaders')">Leaders</button>
-  <button class="tab" data-view="retention" onclick="switchView('retention')">Retention Watch</button>
   <button class="tab" data-view="compare" onclick="switchView('compare')">Compare</button>
-  <button class="tab" data-view="group" onclick="switchView('group')">Cohort Analysis</button>
   <button class="tab" data-view="scenarios" onclick="switchView('scenarios')">Scenarios</button>
-  <button class="tab" data-view="actions" onclick="switchView('actions')">Notes & Actions</button>
-  <button class="tab tab-ref" data-view="frameworks" onclick="switchView('frameworks')" style="margin-left:auto"><svg class="ico tab-icon" viewBox="0 0 24 24" style="fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>Frameworks &amp; Definitions</button>
-  <div class="subnav-status">
+  <div class="subnav-status" style="margin-left:auto;display:flex;align-items:center;gap:12px">
+    <button class="tab-util" onclick="toggleSidePanel('notes-panel')" title="Notes &amp; Actions captured across the review">
+      <svg class="ico" viewBox="0 0 24 24" style="fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;width:14px;height:14px"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+      Notes &amp; Actions
+    </button>
+    <button class="tab-util" onclick="toggleSidePanel('frameworks-panel')" title="Frameworks &amp; Definitions">
+      <svg class="ico" viewBox="0 0 24 24" style="fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;width:14px;height:14px"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+      Frameworks
+    </button>
+    <span style="width:1px;height:16px;background:var(--line)"></span>
     <span class="dot" id="statusDot"></span>
-    <span id="statusText">Live · 0 leaders</span>
+    <span id="statusText" style="font-size:11px;color:var(--ink-3)">Live · 0 leaders</span>
   </div>
 </div>
 
@@ -1658,6 +1747,10 @@ body.story-mode main{padding-bottom:110px}
       <div class="sub">For the CEO · updated live from current pipeline data · click any name to drill in</div>
     </div>
     <button class="btn" onclick="generateBoardPack()" title="Generate a Nomination Committee-ready summary PDF">Generate NomCo pack</button>
+  </div>
+  <div class="view-subnav exec-subnav">
+    <button class="sub-tab active" data-sub="summary" onclick="switchView('executive')">Summary</button>
+    <button class="sub-tab" data-sub="analytics" onclick="switchView('group')">Analytics <span style="opacity:.6;font-weight:500;font-size:11px">· cohort</span></button>
   </div>
 
   <div class="exec-verdict-card" id="exec-verdict-card"></div>
@@ -1713,8 +1806,12 @@ body.story-mode main{padding-bottom:110px}
 <!-- =================== GROUP INSIGHTS (renamed Cohort Analysis) =================== -->
 <section class="view" id="view-group">
   <div class="page-hd">
-    <h1>Group Insights</h1>
+    <h1>Executive Summary <span style="color:var(--ink-4);font-weight:400"> · Analytics</span></h1>
     <div class="sub">Cohort-level view of the GMR Top-200. Filter, then read the shape of the leadership.</div>
+  </div>
+  <div class="view-subnav exec-subnav">
+    <button class="sub-tab" data-sub="summary" onclick="switchView('executive')">Summary</button>
+    <button class="sub-tab active" data-sub="analytics" onclick="switchView('group')">Analytics <span style="opacity:.6;font-weight:500;font-size:11px">· cohort</span></button>
   </div>
 
   <div class="filter-bar" id="filter-bar-group"></div>
@@ -1858,8 +1955,12 @@ body.story-mode main{padding-bottom:110px}
 <!-- =================== SUCCESSION HEALTH =================== -->
 <section class="view" id="view-succession">
   <div class="page-hd">
-    <h1>Succession Health</h1>
+    <h1>Pipeline</h1>
     <div class="sub">Role-by-role succession discussion · capture Fit + step-in live · click any successor to open their profile</div>
+  </div>
+  <div class="view-subnav pipe-subnav">
+    <button class="sub-tab active" data-sub="table" onclick="switchView('succession')">Pipeline table</button>
+    <button class="sub-tab" data-sub="explore" onclick="switchView('roles')">Explore by role <span style="opacity:.6;font-weight:500;font-size:11px">· sidebar + detail</span></button>
   </div>
 
   <div class="pipe-progress-strip" id="pipe-progress-strip"></div>
@@ -1985,8 +2086,12 @@ body.story-mode main{padding-bottom:110px}
 <!-- =================== CRITICAL ROLE VIEW =================== -->
 <section class="view" id="view-roles">
   <div class="page-hd">
-    <h1>Critical Role View</h1>
+    <h1>Pipeline <span style="color:var(--ink-4);font-weight:400"> · Explore by role</span></h1>
     <div class="sub">Every critical role, its named successors, their readiness, flight risk and mobility.</div>
+  </div>
+  <div class="view-subnav pipe-subnav">
+    <button class="sub-tab" data-sub="table" onclick="switchView('succession')">Pipeline table</button>
+    <button class="sub-tab active" data-sub="explore" onclick="switchView('roles')">Explore by role <span style="opacity:.6;font-weight:500;font-size:11px">· sidebar + detail</span></button>
   </div>
 
   <div class="rv-summary" id="rv-summary"></div>
@@ -2037,15 +2142,9 @@ body.story-mode main{padding-bottom:110px}
   </div>
 </section>
 
-<!-- =================== RETENTION =================== -->
-<section class="view" id="view-retention">
-  <div class="page-hd">
-    <h1>Retention Risk — Deep Dive</h1>
-    <div class="sub">All leaders flagged as flight risk, sorted by criticality. Capture retention actions and sponsors live.</div>
-  </div>
-  <div class="ret-summary" id="ret-summary"></div>
-  <div id="ret-table-wrap"></div>
-</section>
+<!-- Retention Watch view REMOVED (v5 nav simplification).
+     Same insight now surfaces via the "Retention conversations you should be having" section
+     on the Executive Summary tab, and flight risk is filterable within the Leaders tab. -->
 
 <!-- =================== COMPARE =================== -->
 <section class="view" id="view-compare">
@@ -2119,14 +2218,22 @@ body.story-mode main{padding-bottom:110px}
   </div>
 </section>
 
-<!-- =================== ACTIONS =================== -->
-<section class="view" id="view-actions">
-  <div class="page-hd">
-    <h1>Notes & Actions</h1>
-    <div class="sub">Consolidated log of everything captured during the review.</div>
+</main>
+
+<!-- Backdrop for slide-out panels -->
+<div class="side-panel-backdrop" id="side-panel-backdrop" onclick="closeAllSidePanels()"></div>
+
+<!-- =================== NOTES & ACTIONS SLIDE-OUT (was full tab in v4) =================== -->
+<aside class="side-panel" id="notes-panel" aria-label="Notes and Actions">
+  <div class="sp-hd">
+    <div>
+      <h2>Notes &amp; Actions</h2>
+      <div class="sp-sub">Consolidated log of everything captured during the review.</div>
+    </div>
+    <button class="sp-close" onclick="closeAllSidePanels()" title="Close">&times;</button>
   </div>
-  <div class="two-col">
-    <div class="card">
+  <div class="sp-body">
+    <div class="card" style="margin-bottom:16px">
       <div class="section-hd" style="margin:0 0 12px"><h2 style="font-size:14px">Comments log</h2><span class="muted" id="comment-count">0 items</span></div>
       <div id="all-comments"></div>
     </div>
@@ -2135,16 +2242,19 @@ body.story-mode main{padding-bottom:110px}
       <div id="all-actions"></div>
     </div>
   </div>
-</section>
-
-</main>
+</aside>
 
 <!-- =================== FRAMEWORKS / REFERENCE =================== -->
-<section class="view" id="view-frameworks">
-  <div class="page-hd">
-    <h1>Frameworks & Definitions</h1>
-    <div class="sub">Reference for the frameworks used across this dashboard · what they mean, how we use them, why they matter for GMR</div>
+<!-- =================== FRAMEWORKS SLIDE-OUT (was full tab in v4) =================== -->
+<aside class="side-panel" id="frameworks-panel" aria-label="Frameworks and Definitions">
+  <div class="sp-hd">
+    <div>
+      <h2>Frameworks &amp; Definitions</h2>
+      <div class="sp-sub">Reference for the frameworks used across this dashboard.</div>
+    </div>
+    <button class="sp-close" onclick="closeAllSidePanels()" title="Close">&times;</button>
   </div>
+  <div class="sp-body">
 
   <!-- Core frameworks -->
   <h2 class="fw-section-hd">The three frameworks</h2>
@@ -2400,7 +2510,8 @@ body.story-mode main{padding-bottom:110px}
       For the full narrative behind these frameworks — including best-practice benchmarks, cited sources, and the deck materials used in the workshop with GMR ExCo — refer to the <b>GMR Talent Review Workshop Deck</b> (Aon Assessment Solutions, July 2026, 65 slides). Sections most relevant: <i>Foundations</i>, <i>Frameworks & Analytical Tools</i>, and <i>Cohort-Level Analysis & AI Readiness</i>.
     </div>
   </div>
-</section>
+  </div>
+</aside>
 
 <!-- Upload modal -->
 <div class="modal-back" id="upload-modal">
@@ -2434,25 +2545,6 @@ body.story-mode main{padding-bottom:110px}
     <span class="fs-label">Next</span><span class="fs-arr">→</span>
   </button>
   <button class="fs-nav-close" title="Close (Esc)" onclick="fsNavClose()">✕</button>
-</div>
-
-<!-- Story mode bar -->
-<div class="story-bar" id="story-bar">
-  <div class="story-progress">
-    <div class="story-step">
-      <span class="story-num" id="story-num">Step 1 of 10</span>
-      <div>
-        <div class="story-title" id="story-title">—</div>
-        <div class="story-desc" id="story-desc">—</div>
-      </div>
-    </div>
-    <div class="story-progress-bar"><div class="story-progress-bar-fill" id="story-progress-fill" style="width:10%"></div></div>
-  </div>
-  <div class="story-nav">
-    <button class="story-btn" onclick="storyPrev()" id="story-prev">← Previous</button>
-    <button class="story-btn primary" onclick="storyNext()" id="story-next">Next →</button>
-    <button class="story-btn close" onclick="exitStoryMode()">Exit</button>
-  </div>
 </div>
 
 <!-- Drilldown modal -->
@@ -3058,7 +3150,6 @@ let STATE = {
   cmpSlots: [null, null, null],
   retentionActions: {}, // leaderId -> {action, sponsor}
   whatIf: false, whatIfScenario: null, // scenario: {roleId: [{leaderId, readiness}]}
-  storyStep: 0, storyActive: false,
   expandedFamilies: {}, // familyName -> bool (default all expanded)
   roleFamilyFilter: [], // empty = all families
   roleSearchQuery: "",
@@ -3110,15 +3201,11 @@ function init(){
   attachExpandButtons();
   document.addEventListener("keydown", e=>{
     if(e.key==="Escape"){
-      if(STATE.storyActive){ exitStoryMode(); return; }
       document.querySelectorAll(".expandable.fullscreen").forEach(el=>exitFullscreen(el));
+      // Also close slide-out panels (Notes & Actions, Frameworks drawer)
+      document.querySelectorAll(".side-panel.open").forEach(el=>el.classList.remove("open"));
     }
-    if(STATE.storyActive){
-      if(e.key==="ArrowRight"){ e.preventDefault(); storyNext(); }
-      if(e.key==="ArrowLeft"){ e.preventDefault(); storyPrev(); }
-      return;
-    }
-    // Fullscreen slideshow navigation (only when in fullscreen and not story)
+    // Fullscreen slideshow navigation
     if(document.body.classList.contains("has-fullscreen")){
       // Don't hijack arrow keys when the user is typing in a field
       const tag = (e.target && e.target.tagName) || "";
@@ -3573,17 +3660,99 @@ function applyFilters(leaders){
     return true;
   });
 }
+// ---------- Info tooltip positioning (fixed-layer + smart above/below) ----------
+// Escape all overflow / clipping contexts by rendering the tooltip in a body-level
+// fixed-position node, computing its position from the trigger icon's bounding rect.
+let _floatingTip = null;
+function _showInfoTip(icon){
+  const body = icon.querySelector(".info-tip-body");
+  if(!body) return;
+  if(!_floatingTip){
+    _floatingTip = document.createElement("div");
+    _floatingTip.className = "info-tip-floating";
+    document.body.appendChild(_floatingTip);
+  }
+  _floatingTip.innerHTML = body.innerHTML;
+  _floatingTip.classList.remove("visible", "tip-above", "tip-below");
+  // Force layout so we can measure the tooltip
+  _floatingTip.style.left = "0px";
+  _floatingTip.style.top = "0px";
+  const tipRect = _floatingTip.getBoundingClientRect();
+  const iconRect = icon.getBoundingClientRect();
+  const gap = 10;
+  const viewportH = window.innerHeight;
+  const viewportW = window.innerWidth;
+  // Prefer above; flip below if not enough headroom
+  const wantAbove = iconRect.top - tipRect.height - gap > 8;
+  let top, arrow;
+  if(wantAbove){
+    top = iconRect.top - tipRect.height - gap;
+    arrow = "tip-above";
+  } else {
+    top = iconRect.bottom + gap;
+    arrow = "tip-below";
+  }
+  // Horizontal — center over icon but clamp within viewport (min 12px margin)
+  let left = iconRect.left + iconRect.width / 2;
+  const halfW = tipRect.width / 2;
+  if(left - halfW < 12) left = halfW + 12;
+  if(left + halfW > viewportW - 12) left = viewportW - halfW - 12;
+  _floatingTip.style.top = top + "px";
+  _floatingTip.style.left = left + "px";
+  _floatingTip.classList.add("visible", arrow);
+}
+function _hideInfoTip(){
+  if(_floatingTip){ _floatingTip.classList.remove("visible"); }
+}
+// Global delegation — works for both:
+//   - .info-tip (little 'i' circles rendered inline in labels)
+//   - .tip-trigger (arbitrary elements that host an .info-tip-body child, e.g. mini 9-box on cards)
+// No per-icon binding needed; works for anything added by any render.
+document.addEventListener("mouseover", (e) => {
+  const trigger = e.target.closest(".info-tip, .tip-trigger");
+  if(trigger && trigger.querySelector(".info-tip-body")){ _showInfoTip(trigger); }
+});
+document.addEventListener("mouseout", (e) => {
+  const trigger = e.target.closest(".info-tip, .tip-trigger");
+  if(trigger && !trigger.contains(e.relatedTarget)) _hideInfoTip();
+});
+document.addEventListener("scroll", _hideInfoTip, true);
+
+// Sub-views (group, roles) live under a parent main tab (executive, succession respectively)
+// Nav-simplification: only 5 primary tabs are visible. Sub-tabs handle the drill-down.
+const _MAIN_TAB_FOR_VIEW = { group: "executive", roles: "succession" };
 function switchView(view){
-  document.querySelectorAll(".tab").forEach(b=>b.classList.toggle("active", b.dataset.view===view));
+  const mainTab = _MAIN_TAB_FOR_VIEW[view] || view;
+  document.querySelectorAll(".tab").forEach(b=>b.classList.toggle("active", b.dataset.view===mainTab));
   document.querySelectorAll(".view").forEach(s=>s.classList.toggle("active", s.id==="view-"+view));
   if(view==="executive") renderExecutive();
   if(view==="succession") renderSuccession();
   if(view==="roles") renderRoles();
   if(view==="leaders") renderLeaderList();
-  if(view==="retention") renderRetention();
   if(view==="compare") renderCompare();
   if(view==="scenarios") renderScenarios();
-  if(view==="actions") renderActionsView();
+  window.scrollTo({top:0,behavior:"instant"});
+}
+
+// ---------- Side panels (Notes & Actions, Frameworks) ----------
+// Replaces the corresponding old full-page tabs. Slides in from the right.
+function toggleSidePanel(panelId){
+  const panel = document.getElementById(panelId);
+  if(!panel) return;
+  const isOpen = panel.classList.contains("open");
+  // Close any other open panel first
+  document.querySelectorAll(".side-panel.open").forEach(p => { if(p !== panel) p.classList.remove("open"); });
+  panel.classList.toggle("open", !isOpen);
+  document.getElementById("side-panel-backdrop").classList.toggle("open", !isOpen);
+  // Populate content if opening
+  if(!isOpen){
+    if(panelId === "notes-panel" && typeof renderActionsView === "function") renderActionsView();
+  }
+}
+function closeAllSidePanels(){
+  document.querySelectorAll(".side-panel.open").forEach(p => p.classList.remove("open"));
+  const bd = document.getElementById("side-panel-backdrop");
+  if(bd) bd.classList.remove("open");
 }
 function renderAll(){
   const filtered = applyFilters(STATE.leaders);
@@ -3685,7 +3854,90 @@ function setFitInline(roleId, slotIdx, fitLevel){
   if(derived) slot.readiness = derived;
   const fitLbl = _FIT_LABELS[_FIT_KEYS[fitLevel]];
   logEdit("Fit " + fitLbl + " for " + (leader?leader.name:slot.leaderId) + " on role " + role.title + " → " + (derived||"?"));
+  // Auto-reorder: capture positions → sort slots by readiness → re-render → animate FLIP
+  const beforePositions = _captureFlipPositions();
+  _sortRoleSlotsByReadiness(role);
   renderSuccession();
+  _animateFlipTransitions(beforePositions);
+}
+
+// Sort a role's slots by readiness rank (Ready Now first, then 1yr, 2-3yr, 4+yr).
+// Stable within tie (preserves original order among equally-ready successors).
+const _READINESS_RANK = {
+  [READINESS[0]]: 0, [READINESS[1]]: 1, [READINESS[2]]: 2, [READINESS[3]]: 3
+};
+function _sortRoleSlotsByReadiness(role){
+  if(!role || !role.slots || role.slots.length < 2) return;
+  // Attach original index so tie-break is deterministic (stable sort)
+  role.slots.forEach((sl, i) => { sl.__origIdx = i; });
+  role.slots.sort((a, b) => {
+    const ra = _READINESS_RANK[a.readiness] ?? 99;
+    const rb = _READINESS_RANK[b.readiness] ?? 99;
+    if(ra !== rb) return ra - rb;
+    return a.__origIdx - b.__origIdx;
+  });
+  role.slots.forEach(sl => delete sl.__origIdx);
+  // Keep the parallel .successors array in sync so downstream reads (aggregate stats etc.) match
+  role.successors = role.slots.map(sl => sl.leaderId);
+}
+
+// ---------- FLIP animation for successor card reorder ----------
+// Standard "First-Last-Invert-Play" pattern: capture positions before DOM rewrite,
+// then apply an inverse transform on the new DOM and animate to identity.
+function _captureFlipPositions(){
+  const map = new Map();
+  document.querySelectorAll("#succ-role-table [data-flip-key]").forEach(el => {
+    const rect = el.getBoundingClientRect();
+    map.set(el.dataset.flipKey, { left: rect.left, top: rect.top });
+  });
+  return map;
+}
+function _animateFlipTransitions(before){
+  if(!before || !before.size) return;
+  const cards = document.querySelectorAll("#succ-role-table [data-flip-key]");
+  cards.forEach(el => {
+    const key = el.dataset.flipKey;
+    const prev = before.get(key);
+    if(!prev) return; // new card — skip
+    const now = el.getBoundingClientRect();
+    const dx = prev.left - now.left;
+    const dy = prev.top - now.top;
+    if(dx === 0 && dy === 0) return;
+    // Apply inverse transform to place card back at old spot, without transition
+    el.style.transition = "none";
+    el.style.transform = `translate(${dx}px, ${dy}px)`;
+    // Force reflow so the browser registers the starting position
+    el.getBoundingClientRect();
+    // Trigger animation back to identity with smooth transition
+    el.style.transition = "transform 320ms cubic-bezier(.22,1,.36,1)";
+    el.style.transform = "";
+  });
+  // Clean up inline styles after animation finishes
+  setTimeout(() => {
+    cards.forEach(el => { el.style.transition = ""; });
+  }, 400);
+}
+
+// Called when a Fit button is clicked on the Leader Profile Target Roles table.
+// Same underlying logic as setFitInline but rerenders the profile (not the pipeline table).
+// State change propagates to the Pipeline tab automatically the next time it's rendered.
+function setFitFromProfile(roleId, slotIdx, fitLevel, leaderId){
+  const role = STATE.roles.find(r => r.id === roleId);
+  if(!role || !role.slots || !role.slots[slotIdx]) return;
+  const slot = role.slots[slotIdx];
+  const leader = STATE.leaders.find(l => l.id === slot.leaderId);
+  slot.fitLevel = fitLevel;
+  slot.capturedAt = new Date().toISOString();
+  // Derive readiness from Fit × Potential (same matrix as Pipeline)
+  const derived = _deriveReadinessFromFit(fitLevel, leader);
+  if(derived) slot.readiness = derived;
+  const fitLbl = _FIT_LABELS[_FIT_KEYS[fitLevel]];
+  logEdit("Fit " + fitLbl + " for " + (leader?leader.name:slot.leaderId) + " on role " + role.title + " → " + (derived||"?") + " (captured from Leader Profile)");
+  // Re-sort the role's slots by readiness so Pipeline stays consistent
+  _sortRoleSlotsByReadiness(role);
+  // Refresh the leader profile so the Target Roles table reflects the new readiness pill
+  renderLeaderProfile(leaderId);
+  saveState();
 }
 
 // Called when step-in successor dropdown changes
@@ -4071,7 +4323,7 @@ function renderExecVerdict(){
       <li onclick="switchView('succession')" title="Go to Pipeline"><span><b>${pct}%</b> of critical roles have a Ready-Now successor <span class="vk-bench">${benchClause}</span></span>${chev}</li>
       <li onclick="scrollToFutureLeaders()" title="See the Future Leaders"><span><b>${flCount}</b> Future Leaders identified — <b>${flPct}%</b> of the cohort <span class="vk-bench">${flComment}</span></span>${chev}</li>
       <li onclick="drillLaCritical()" title="See the LA Critical roles at risk"><span><b>${laCriticalWeak}</b> LA Critical role${laCriticalWeak===1?"":"s"} need${laCriticalWeak===1?"s":""} immediate action</span>${chev}</li>
-      <li onclick="switchView('retention')" title="Go to Retention Watch"><span><b>${highRiskCrit}</b> high flight-risk leader${highRiskCrit===1?"":"s"} on critical successor lists</span>${chev}</li>
+      <li onclick="switchView('leaders')" title="Open Leaders — filter by flight risk"><span><b>${highRiskCrit}</b> high flight-risk leader${highRiskCrit===1?"":"s"} on critical successor lists</span>${chev}</li>
     </ul>
   `;
 }
@@ -4143,7 +4395,7 @@ function renderExecFocusExec(){
   if(ins.highFlightOnSlates && ins.highFlightOnSlates.length){
     concerns.push({
       text: `<b>${ins.highFlightOnSlates.length}</b> high flight-risk leaders sit on critical successor lists.`,
-      pill: drillPill("Drill in", "switchView('retention')")
+      pill: drillPill("Drill in", "switchView('leaders')")
     });
   }
   const strengths = [];
@@ -5062,8 +5314,28 @@ function renderMiniMatrix(l){
   }
   const frameLbl = mode === "ai" ? "AI Readiness" : "9-box";
   const zoneLbl = names[row][col];
-  return `<div class="succ-minigrid" title="${frameLbl}: ${zoneLbl}">
+  // Build the colour-key legend inline in the tooltip so users don't need to hunt for a header legend
+  const uniqueColors = new Set();
+  const legendItems = [];
+  for(let rr=0;rr<3;rr++) for(let cc=0;cc<3;cc++){
+    const key = palette[rr][cc]+"|"+names[rr][cc];
+    if(uniqueColors.has(palette[rr][cc])) continue;
+    uniqueColors.add(palette[rr][cc]);
+    legendItems.push({color:palette[rr][cc], label:names[rr][cc]});
+  }
+  // Group cells by colour for a cleaner legend
+  const byColor = {};
+  for(let rr=0;rr<3;rr++) for(let cc=0;cc<3;cc++){
+    const co = palette[rr][cc];
+    (byColor[co] = byColor[co] || []).push(names[rr][cc]);
+  }
+  const legendHtml = Object.entries(byColor).map(([co, labels]) =>
+    `<div style="display:flex;align-items:center;gap:6px;margin-top:3px"><span style="display:inline-block;width:10px;height:10px;border-radius:2px;background:${co};flex-shrink:0"></span><span>${labels.join(" · ")}</span></div>`
+  ).join("");
+  const tipBody = `<b>${frameLbl}: ${zoneLbl}</b><div style="margin-top:6px;font-size:10.5px;color:rgba(255,255,255,.85)">Colour key</div>${legendHtml}`;
+  return `<div class="succ-minigrid tip-trigger" tabindex="0" aria-label="${frameLbl}: ${zoneLbl}">
     <svg class="mg-svg" viewBox="0 0 ${total} ${total}">${cells}</svg>
+    <span class="info-tip-body">${tipBody}</span>
   </div>`;
 }
 
@@ -5128,12 +5400,13 @@ function setPipelineViewMode(mode){
   renderSuccRoleTable();
 }
 
-// Colour-key legend for the current view (shows the four palette buckets, not all 9 zones)
+// Colour-key legend — compact chip with hover-tooltip showing the full breakdown.
+// Replaces the wordy inline legend row (was crowding the Pipeline header).
 function renderPipelineLegend(){
   const el = document.getElementById("pv-legend");
   if(!el) return;
   const mode = STATE.pipelineViewMode || "ninebox";
-  const items = mode === "ai"
+  const gridItems = mode === "ai"
     ? [
         {color:"#6BC9A6", label:"AI Ready"},
         {color:"#F5CE3E", label:"Emerging"},
@@ -5152,16 +5425,15 @@ function renderPipelineLegend(){
     {color:"var(--rn-o)", label:"Ready 2-3yr"},
     {color:"var(--rn-r)", label:"Ready 4+yr"},
   ];
-  el.innerHTML =
-    `<span style="color:var(--ink-3);font-weight:500">Card colour</span>`
+  const tipBody = `<b>Card colour</b> = readiness horizon<br>`
     + readinessItems.map(it =>
-        `<span class="lg-item"><span class="lg-swatch" style="background:${it.color}"></span>${it.label}</span>`
+        `<span style="display:inline-block;width:9px;height:9px;border-radius:2px;background:${it.color};margin-right:6px;vertical-align:middle"></span>${it.label}<br>`
       ).join("")
-    + `<span style="color:var(--line);margin:0 4px">|</span>`
-    + `<span style="color:var(--ink-3);font-weight:500">Mini-grid</span>`
-    + items.map(it =>
-        `<span class="lg-item"><span class="lg-swatch" style="background:${it.color}"></span>${it.label}</span>`
+    + `<div style="margin-top:8px"><b>Mini-grid</b> = ${mode==="ai" ? "AI Readiness zone" : "9-box zone"}</div>`
+    + gridItems.map(it =>
+        `<span style="display:inline-block;width:9px;height:9px;border-radius:2px;background:${it.color};margin-right:6px;vertical-align:middle"></span>${it.label}<br>`
       ).join("");
+  el.innerHTML = `<span class="info-tip pv-legend-chip" tabindex="0" aria-label="Colour key">i<span class="info-tip-body">${tipBody}</span></span><span style="color:var(--ink-3);font-weight:500;font-size:11px">Colour key</span>`;
 }
 
 // ---------- Succession Health ----------
@@ -5470,6 +5742,9 @@ function renderSuccRoleTable(){
   updatePipeProgress();
   const t = document.getElementById("succ-role-table");
   const leaders = STATE.leaders;
+  // Ensure every role's slots are in readiness order (Ready Now first) — so the pipeline
+  // table always presents "best successor first" regardless of when Fit was captured.
+  STATE.roles.forEach(_sortRoleSlotsByReadiness);
   const rClass = read => read===READINESS[0]?"rn": read===READINESS[1]?"r1":read===READINESS[2]?"r2":"r4";
   // Readiness label without repeating "Ready" — the pill will say "Ready · Now" etc.
   const readyLabel = read => read===READINESS[0]?"Now":
@@ -5562,10 +5837,10 @@ function renderSuccRoleTable(){
     const successorIds = (r.slots||[]).map(sl=>sl.leaderId).filter(Boolean);
     const compareBtn = successorIds.length >= 2 ?
       `<button class="crt-compare-btn" onclick="event.stopPropagation();compareTheseSuccessors(${JSON.stringify(successorIds).replace(/"/g,'&quot;')})">Compare these ${successorIds.length}</button>` : "";
-    // Inline chip row for Job Family + Level + Tier (replaces the two removed columns)
+    // Inline chip row for Level + Job Family (Tier removed for cleaner look — role tier is
+    // implicit in the role title and is used only for backend logic, not for user display)
     const chipRow = `<div class="crt-role-meta">
       <span class="role-lvl">${r.cl}</span>
-      <span class="role-tier">Tier ${r.tier}</span>
       <span class="role-fam"><span class="fam-dot" style="background:${FAMILY_COLORS[r.family]||'#6E6E6E'}"></span>${r.family}</span>
     </div>`;
     html += `<tr>
@@ -5600,7 +5875,7 @@ function renderSuccRoleTable(){
         </div>
       </div>`;
       const derivedLbl = sl.fitLevel != null ? "→ " + (sl.readiness || readiness) : "";
-      html += `<td onclick="openLeader('${s.id}')" style="cursor:pointer" title="Open ${s.name}'s profile"><div class="succ-card ${rClass(readiness)}" title="Readiness: ${readiness}">
+      html += `<td onclick="openLeader('${s.id}')" style="cursor:pointer" title="Open ${s.name}'s profile"><div class="succ-card ${rClass(readiness)}" data-flip-key="${r.id}::${s.id}" title="Readiness: ${readiness}">
         <div class="succ-top">
           <div class="succ-name" title="${s.name}">${s.name}</div>
           <div class="succ-lvl">${s.level}</div>
@@ -5924,17 +6199,6 @@ function _renderLeaderListInner(){
 function openLeader(lid){
   STATE.currentLeader = lid;
   switchView("leaders"); renderLeaderList(); renderLeaderProfile(lid);
-}
-// Editable retirement age per leader — silent override (no "why" field for now)
-function setLeaderRetirementAge(lid, val){
-  const l = STATE.leaders.find(x => x.id === lid);
-  if(!l) return;
-  const n = parseInt(val, 10);
-  if(isNaN(n) || n < 40 || n > 80) return;
-  l.retirementAge = n;
-  logEdit("Retirement age set to " + n + " for " + l.name);
-  scheduleAutosave();
-  renderLeaderProfile(lid);
 }
 // ---------- Persona / PMP / Strengths derivations (align with Leadership deck framework) ----------
 // Four leadership persona archetypes — used in the 29 July Leadership deck's cohort analysis.
@@ -6300,50 +6564,28 @@ function renderLeaderProfile(lid){
   const summary = generateExecSummary(l);
 
   c.innerHTML = `
-    <div class="lp-hero">
-      <div class="lp-hero-inner">
-        <div class="lp-avatar">${initials(l.name)}</div>
-        <div class="lp-hero-content">
-          <div class="lp-bu-tag">${l.bu} · ${l.function}</div>
+    <div class="lp-hero lp-hero-slim">
+      <div class="lp-hero-inner-slim">
+        <div class="lp-avatar-sm">${initials(l.name)}</div>
+        <div class="lp-hero-id">
           <div class="lp-name">${l.name}</div>
-          <div class="lp-role">${l.role} · ${l.country} · ${l.tenure} yrs tenure · Reports to ${l.manager}</div>
-          <div style="margin-top:10px;display:flex;align-items:center;gap:8px;flex-wrap:wrap">
-            <span class="dq-badge ${l.dataQuality.status}"><span class="dq-dot"></span>Assessment: ${l.dataQuality.note}</span>
-            <button class="btn" style="background:rgba(255,255,255,.12);color:#fff;border-color:rgba(255,255,255,.25)" onclick="openCompareForLeader('${l.id}')">Compare with…</button>
+          <div class="lp-role-sm">${l.role}</div>
+        </div>
+        <div class="lp-hero-9box">
+          <div class="lp9-hd">9-Box Position <span class="lp9-hd-zone">${l.nineBox}</span></div>
+          <div class="lp9-frame">
+            <div class="lp9-yax">Potential</div>
+            <div class="lp9-grid">
+              ${[0,1,2].map(rr => [0,1,2].map(cc => {
+                const isHere = rr === l.nineBoxRow && cc === l.nineBoxCol;
+                const label = NINEBOX_ZONES[rr][cc];
+                const bg = _PALETTE_NB[rr][cc];
+                return `<div class="lp9-cell ${isHere?'here':''}" style="background:${isHere?bg:bg+'55'}" title="${label}">${isHere ? "<span class='lp9-star'>★</span>" : ""}</div>`;
+              }).join("")).join("")}
+            </div>
+            <div class="lp9-xax">Performance</div>
           </div>
         </div>
-        <div style="display:flex;flex-direction:column;gap:8px">
-          <div class="lp-verdict">
-            <div class="vk">Overall Potential Classification</div>
-            <div class="vv ${potClassCls}">${potClass}</div>
-          </div>
-          ${persona ? `<div class="lp-persona-hero" title="${persona.body}">
-            <div class="pk">Leadership Persona</div>
-            <div class="pv">${persona.name}</div>
-          </div>` : ""}
-        </div>
-      </div>
-    </div>
-
-    <div class="lp-metrics" style="grid-template-columns:repeat(4,1fr)">
-      <div class="lp-metric"><span class="lm-swatch"></span>
-        <div class="lm-lbl">Level</div>
-        <div class="lm-val">${l.level}</div>
-      </div>
-      <div class="lp-metric rag-${bestReadinessClass}"><span class="lm-swatch"></span>
-        <div class="lm-lbl">Succession Readiness (best)</div>
-        <div class="lm-val">${bestReadinessLabel}</div>
-        <div class="lm-sub">${bestReadinessSub}${targetRoles.length>1?` &middot; +${targetRoles.length-1} more target role${targetRoles.length>2?'s':''}`:""}</div>
-      </div>
-      <div class="lp-metric rag-${futureRead.cls}"><span class="lm-swatch"></span>
-        <div class="lm-lbl">Future Readiness</div>
-        <div class="lm-val">${futureRead.lbl}</div>
-        <div class="lm-sub">Performance × Potential (9-box)</div>
-      </div>
-      <div class="lp-metric rag-${aiRead.cls}"><span class="lm-swatch"></span>
-        <div class="lm-lbl">AI Readiness</div>
-        <div class="lm-val">${aiRead.lbl}</div>
-        <div class="lm-sub">Change: ${changeR} · Use: ${aiU}</div>
       </div>
     </div>
 
@@ -6357,7 +6599,19 @@ function renderLeaderProfile(lid){
         <div class="exec-body">${summary}</div>
       </div>
 
-      <div class="lp-snap-band">
+      <div class="lp-hero-toolbar">
+        <div class="lp-tb-tags">
+          <span class="lp-tb-tag ${potClassCls}">Overall Potential: <b>${potClass}</b></span>
+          <span class="lp-tb-tag rag-${futureRead.cls}">Future Readiness: <b>${futureRead.lbl}</b></span>
+          <span class="lp-tb-tag rag-${aiRead.cls}">AI Readiness: <b>${aiRead.lbl}</b></span>
+          <span class="dq-badge ${l.dataQuality.status}"><span class="dq-dot"></span>${l.dataQuality.note}</span>
+        </div>
+        <div class="lp-tb-actions">
+          <button class="btn" onclick="openCompareForLeader('${l.id}')">Compare with…</button>
+        </div>
+      </div>
+
+      <div class="lp-snap-band two-col">
         <div class="lp-snap-card persona" style="--persona-accent:${persona?persona.color:'var(--navy)'}">
           <div class="lsc-lbl">Leadership Persona <span class="info-tip" tabindex="0" aria-label="What is a Leadership Persona?">i<span class="info-tip-body"><b>Leadership Persona</b> is a signature archetype derived from the leader's ADEPT-15 personality profile — matched to the dimensions most characteristic of Innovation, Operational, Change, or Crisis leadership. Persona is <b>not</b> a judgement of capability; it describes where the leader is likely to be at their best. Used at cohort level in the 29 July deck to map bench balance.</span></span></div>
           ${persona ? `
@@ -6366,24 +6620,6 @@ function renderLeaderProfile(lid){
           <div class="persona-dims">
             ${persona.dims.map((d,i)=>`<span>${d} · ${persona.dimScores[i].toFixed(1)}/9</span>`).join("")}
           </div>` : `<div class="persona-body" style="color:var(--ink-3);font-style:italic">Insufficient ADEPT-15 data to derive persona.</div>`}
-        </div>
-        <div class="lp-snap-card ninebox">
-          <div class="lsc-lbl">9-Box Position <span class="info-tip" tabindex="0" aria-label="What is the 9-Box?">i<span class="info-tip-body"><b>9-Box Grid</b> plots Performance (horizontal) × Potential (vertical). Position determines Future Readiness classification and drives development / succession decisions. Top-right = Future Leader; bottom-left = Under-performer.</span></span></div>
-          <div class="mini-nb-frame">
-            <div class="mini-nb-yax">Potential</div>
-            <div class="mini-nb">
-              ${[0,1,2].map(rr => [0,1,2].map(cc => {
-                const isHere = rr === l.nineBoxRow && cc === l.nineBoxCol;
-                const label = NINEBOX_ZONES[rr][cc];
-                const bg = _PALETTE_NB[rr][cc];
-                // Choose text colour for contrast on tinted background
-                const tintStyle = isHere ? "" : `style="background:${bg}33;color:${bg === '#6BC9A6' ? '#1F7A5C' : bg === '#F5CE3E' ? '#8A6B00' : bg === '#F5A45A' ? '#7A3F0F' : bg === '#EF4B4E' ? '#B32B2E' : '#1E5A9F'}"`;
-                return `<div class="mini-nb-cell ${isHere?'here':''}" ${tintStyle} title="${label}">${isHere ? "★" : ""}</div>`;
-              }).join("")).join("")}
-            </div>
-            <div class="mini-nb-xax">Performance</div>
-            <div class="mini-nb-caption">${l.nineBox}</div>
-          </div>
         </div>
         <div class="lp-snap-card pmp">
           <div class="lsc-lbl">Performance (PMP) · 3-year trajectory <span class="info-tip" tabindex="0" aria-label="What are the PMP codes?">i<span class="info-tip-body"><b>PMP</b> is GMR's annual performance rating.<br><b>OP</b> — Outstanding Performance<br><b>EP</b> — Exceeds Performance<br><b>VGP</b> — Very Good Performance<br><b>NVGP</b> — Needs Very Good Performance</span></span></div>
@@ -6426,15 +6662,26 @@ function renderLeaderProfile(lid){
         ${targetRoles.length===0
           ? `<div class="lp-target-empty">This leader is not currently tagged as a successor for any critical role. Consider mapping to a target role during the review.</div>`
           : `<table class="lp-target-tbl">
-              <thead><tr><th>Target role</th><th>Tier</th><th>Business Unit</th><th class="right">Readiness</th></tr></thead>
+              <thead><tr><th>Target role</th><th>Business Unit</th><th class="center">Functional Fit</th><th class="right">Readiness</th></tr></thead>
               <tbody>
-                ${targetRoles.map(tr=>`
+                ${targetRoles.map(tr=>{
+                  // Look up the slot to get current fitLevel — needed to render inline picker
+                  const slot = (tr.role.slots||[]).find(sl=>sl.leaderId===l.id);
+                  const fitKey = slot && slot.fitLevel != null ? ["low","med","high"][slot.fitLevel] : null;
+                  const slotIdx = slot ? tr.role.slots.indexOf(slot) : -1;
+                  const fitPicker = slotIdx >= 0 ? `<div class="lp-fit-inline" onclick="event.stopPropagation()">
+                    <button class="lp-fit-btn ${fitKey==='high'?'active':''}" onclick="setFitFromProfile('${tr.role.id}',${slotIdx},2,'${l.id}')" title="High fit">H</button>
+                    <button class="lp-fit-btn ${fitKey==='med'?'active':''}"  onclick="setFitFromProfile('${tr.role.id}',${slotIdx},1,'${l.id}')" title="Medium fit">M</button>
+                    <button class="lp-fit-btn ${fitKey==='low'?'active':''}"  onclick="setFitFromProfile('${tr.role.id}',${slotIdx},0,'${l.id}')" title="Low fit">L</button>
+                  </div>` : `<span style="color:var(--ink-4);font-size:11px">—</span>`;
+                  return `
                   <tr>
                     <td><b>${tr.role.title}</b></td>
-                    <td>Tier ${tr.role.tier}</td>
                     <td>${(tr.role.bu||"").replace("GMR ","")}</td>
+                    <td class="center">${fitPicker}</td>
                     <td class="right"><span class="pill rn-${readClass(tr.readiness)}">${tr.readiness}</span></td>
-                  </tr>`).join("")}
+                  </tr>`;
+                }).join("")}
               </tbody>
             </table>`
         }
@@ -6460,13 +6707,11 @@ function renderLeaderProfile(lid){
           </div>
         </div></div>
         <div class="lp-snap-item"><div class="k">Age</div><div class="v">${l.age||"—"} yrs${l.age?` <span style="color:var(--ink-3);font-weight:500;font-size:11px">· ${l.age<40?"Under 40":l.age<=50?"40–50":l.age<=60?"51–60":"61–70"}</span>`:""}</div></div>
-        <div class="lp-snap-item"><div class="k">Retirement age</div><div class="v">
-          <span class="lp-ret-edit"><input type="number" min="55" max="75" value="${l.retirementAge||60}" onchange="setLeaderRetirementAge('${l.id}', this.value)" title="Editable per leader — default 60"/><span class="yr-lbl">yrs</span>${l.age && (l.retirementAge||60) - l.age <= 3 ? `<span class="yr-flag">⚠ ${(l.retirementAge||60) - l.age >= 0 ? "in " + ((l.retirementAge||60) - l.age) + " yr" + ((l.retirementAge||60) - l.age === 1 ? "" : "s") : "overdue"}</span>` : ""}</span>
-        </div></div>
+        <div class="lp-snap-item"><div class="k">Retirement age</div><div class="v">60 yrs${l.age && 60 - l.age <= 3 ? ` <span style="color:var(--aon-red);font-size:11px;font-weight:700;margin-left:6px">⚠ ${60 - l.age >= 0 ? "in " + (60 - l.age) + " yr" + (60 - l.age === 1 ? "" : "s") : "overdue"}</span>` : ""}</div></div>
         <div class="lp-snap-item"><div class="k">Flight Risk</div><div class="v">${l.flightRisk}</div></div>
         <div class="lp-snap-item"><div class="k">Openness to Relocate</div><div class="v">${l.openRelocate?'Willing':'Limited'}</div></div>
+        <div class="lp-snap-item"><div class="k">Level</div><div class="v">${l.level}</div></div>
         <div class="lp-snap-item"><div class="k">Leadership Persona</div><div class="v">${persona ? persona.name : "—"}</div></div>
-        <div class="lp-snap-item"><div class="k">9-Box Position</div><div class="v">${l.nineBox}</div></div>
       </div>
 
       <div class="scores-grid">
@@ -7410,52 +7655,6 @@ function whatIfReadiness(roleId, slotIdx, newReadiness){
   r.slots[slotIdx].readiness = newReadiness;
   renderRoles();
 }
-
-// ---------- Story mode ----------
-const STORY_STEPS = [
-  {view:"executive", title:"Executive summary — the verdict", desc:"Start with the one-line verdict: is the pipeline healthy? Which roles need attention? Who are the future leaders?"},
-  {view:"executive", title:"Named exposed roles", desc:"Walk through the specific critical roles that don't have adequate Ready-Now coverage — these are where the CEO needs to invest personal sponsor time."},
-  {view:"executive", title:"Top potential + succession front-runners", desc:"The names to know — leaders with the highest Potential, and those Ready-Now for Tier-1 roles."},
-  {view:"executive", title:"Retention conversations to have", desc:"High flight-risk leaders on critical successor lists — losing any of them meaningfully weakens the pipeline."},
-  {view:"executive", title:"Can this leadership deliver the strategy?", desc:"The cohort's strongest and weakest traits, tied to GMR's strategic priorities — where do we deliver, where are we exposed?"},
-  {view:"group", title:"Cohort headlines", desc:"Start with the topline: how many leaders in the Top-200, what proportion Ready-Now, what's the flight risk profile."},
-  {view:"group", title:"Potential — Development Centre scores", desc:"Which traits does the cohort demonstrate strongest / weakest? Anchor everything else against this shape."},
-  {view:"group", title:"Personality (ADEPT-15)", desc:"How the cohort is wired vs GMR benchmark. Where the group's natural strengths and risks lie."},
-  {view:"group", title:"9-box distribution", desc:"How the whole Top-200 splits across Performance × Potential. Click cells to drill into leaders."},
-  {view:"group", title:"AI Readiness", desc:"Change readiness × AI use. How well positioned is the leadership for GMR's digital transformation."},
-  {view:"succession", title:"Pipeline health", desc:"The overall pipeline health gauge. Are we above the 55% Ready-Now threshold?"},
-  {view:"succession", title:"Critical role pipeline table", desc:"Each critical role, its named successors, their readiness — sort by Red-first to tackle risk."},
-  {view:"succession", title:"Successor Readiness Matrix", desc:"The successor pool plotted on Fit × Potential — see where each successor sits."},
-  {view:"roles", title:"Deep-dive on critical roles", desc:"Walk through each critical role and its successor list one by one — start with the exposed ones."},
-  {view:"retention", title:"Retention risk deep-dive", desc:"All high-flight-risk leaders in one view — capture retention actions live before closing the session."}
-];
-function startStoryMode(){
-  STATE.storyActive = true; STATE.storyStep = 0;
-  document.body.classList.add("story-mode");
-  document.getElementById("story-bar").classList.add("active");
-  goStoryStep(0);
-}
-function exitStoryMode(){
-  STATE.storyActive = false;
-  document.body.classList.remove("story-mode");
-  document.getElementById("story-bar").classList.remove("active");
-}
-function goStoryStep(i){
-  if(i<0||i>=STORY_STEPS.length) return;
-  STATE.storyStep = i;
-  const step = STORY_STEPS[i];
-  switchView(step.view);
-  document.getElementById("story-num").textContent = `Step ${i+1} of ${STORY_STEPS.length}`;
-  document.getElementById("story-title").textContent = step.title;
-  document.getElementById("story-desc").textContent = step.desc;
-  document.getElementById("story-progress-fill").style.width = ((i+1)/STORY_STEPS.length*100)+"%";
-  document.getElementById("story-prev").disabled = i===0;
-  document.getElementById("story-next").disabled = i===STORY_STEPS.length-1;
-  document.getElementById("story-next").textContent = i===STORY_STEPS.length-1 ? "Done ✓" : "Next →";
-  window.scrollTo({top:0,behavior:"smooth"});
-}
-function storyNext(){ if(STATE.storyStep<STORY_STEPS.length-1) goStoryStep(STATE.storyStep+1); }
-function storyPrev(){ if(STATE.storyStep>0) goStoryStep(STATE.storyStep-1); }
 
 // ---------- Print / PDF ----------
 function printReport(){
