@@ -791,20 +791,66 @@ main{padding:24px 32px 60px;max-width:1600px;margin:0 auto}
 .lp-hero-meta .lp-hm-v{font-weight:600;color:#fff}
 .lp-hero-meta .lp-hm-sep{width:1px;height:11px;background:rgba(255,255,255,.18)}
 
+/* ---- Pinned facts strip (v6.1) — vital demographics always visible below hero ---- */
+.lp-facts-strip{background:#fff;border-bottom:1px solid var(--line);padding:12px 28px;
+  display:flex;align-items:center;gap:20px;flex-wrap:wrap;position:sticky;top:56px;z-index:45}
+.lp-facts-strip .lpf-item{display:inline-flex;align-items:baseline;gap:6px;font-size:12px;color:var(--ink)}
+.lp-facts-strip .lpf-k{font-size:9.5px;text-transform:uppercase;letter-spacing:.08em;color:var(--ink-3);font-weight:600}
+.lp-facts-strip .lpf-v{font-weight:600;color:var(--ink);font-variant-numeric:tabular-nums}
+.lp-facts-strip .lpf-v.g{color:#1F7A5C}
+.lp-facts-strip .lpf-v.y{color:#8A6B00}
+.lp-facts-strip .lpf-v.r{color:#B32B2E}
+.lp-facts-strip .lpf-sep{width:1px;height:14px;background:var(--line-2)}
+.lp-facts-strip .lpf-warn{background:var(--rn-r-tint);color:#B32B2E;padding:3px 10px;border-radius:99px;
+  font-size:11px;font-weight:700;display:inline-flex;align-items:center;gap:4px}
+.lp-facts-strip .lpf-expand{margin-left:auto;background:transparent;border:1px solid var(--line);
+  padding:5px 12px;font-size:11px;color:var(--ink-2);border-radius:99px;cursor:pointer;font-family:inherit;
+  font-weight:500;display:inline-flex;align-items:center;gap:5px;transition:all .12s}
+.lp-facts-strip .lpf-expand:hover{border-color:var(--ink-3);color:var(--ink);background:var(--bg-2)}
+.lp-facts-strip .lpf-expand .lpf-chev{transition:transform .2s;display:inline-block}
+.lp-facts-strip.expanded .lpf-expand .lpf-chev{transform:rotate(180deg)}
+/* Inline expandable full snapshot — appears between strip and Fit panel when expanded */
+.lp-facts-full{display:none;background:#F7F8F9;border-bottom:1px solid var(--line);padding:16px 28px}
+.lp-facts-strip.expanded + .lp-facts-full{display:block}
+.lp-facts-full .lp-snapshot{margin-bottom:0}
+/* PMP mini inline within the strip */
+.lp-facts-strip .lpf-pmp{display:inline-flex;align-items:baseline;gap:3px}
+.lp-facts-strip .lpf-pmp .m-c{font-size:11px;font-weight:700;font-variant-numeric:tabular-nums}
+.lp-facts-strip .lpf-pmp .m-c.op{color:#0F8759}
+.lp-facts-strip .lpf-pmp .m-c.ep{color:#1E5A9F}
+.lp-facts-strip .lpf-pmp .m-c.vgp{color:#8A6B00}
+.lp-facts-strip .lpf-pmp .m-c.nvgp{color:#B00019}
+.lp-facts-strip .lpf-pmp .m-a{color:var(--ink-4);font-size:10px}
+
 /* ---- Leader Profile sub-nav + panels (v6) ---- */
-/* Prominent Functional Fit capture panel — always visible above sub-tabs */
+/* Prominent Functional Fit capture panel — collapsible, default expanded (critical input) */
 .lp-fit-prominent{background:linear-gradient(180deg,#FFFCF3 0%,#FFF9E6 100%);
   border:1px solid #F0DFA0;border-left:4px solid var(--rn-y);border-radius:8px;
-  padding:16px 20px 18px;margin-bottom:20px;position:relative}
+  padding:0;margin-bottom:20px;position:relative;overflow:hidden}
 .lp-fit-prominent .lpfp-hd{display:flex;align-items:baseline;justify-content:space-between;gap:12px;
-  margin-bottom:12px;flex-wrap:wrap}
+  flex-wrap:wrap;padding:14px 20px;cursor:pointer;user-select:none}
+.lp-fit-prominent .lpfp-hd:hover{background:rgba(245,206,62,.08)}
 .lp-fit-prominent .lpfp-title{font-size:13px;font-weight:700;color:var(--ink);letter-spacing:-.01em;
-  display:flex;align-items:center;gap:8px}
-.lp-fit-prominent .lpfp-title .lpfp-icon{width:20px;height:20px;background:var(--rn-y);color:#5A4400;
-  border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:11px;font-weight:800}
+  display:flex;align-items:center;gap:10px}
+.lp-fit-prominent .lpfp-title .lpfp-icon{width:22px;height:22px;background:var(--rn-y);color:#5A4400;
+  border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;flex-shrink:0}
+.lp-fit-prominent .lpfp-title .lpfp-caret{color:var(--ink-3);font-size:10px;transition:transform .18s;display:inline-block;margin-right:2px}
+.lp-fit-prominent.collapsed .lpfp-title .lpfp-caret{transform:rotate(-90deg)}
 .lp-fit-prominent .lpfp-sub{font-size:11.5px;color:var(--ink-2);line-height:1.5;margin-top:2px}
+.lp-fit-prominent .lpfp-body{padding:0 20px 18px;border-top:1px dashed rgba(240,223,160,.7)}
+.lp-fit-prominent.collapsed .lpfp-body{display:none}
+.lp-fit-prominent.collapsed{padding-bottom:0}
+.lp-fit-prominent.collapsed .lpfp-hd{padding-bottom:14px}
 .lp-fit-prominent .lpfp-empty{padding:18px 16px;background:#fff;border:1px dashed var(--line);
-  border-radius:5px;text-align:center;color:var(--ink-3);font-size:12px;font-style:italic;line-height:1.5}
+  border-radius:5px;text-align:center;color:var(--ink-3);font-size:12px;font-style:italic;line-height:1.5;margin-top:12px}
+/* Compact summary shown in the header row when panel is expanded — captures at-a-glance state */
+.lp-fit-prominent .lpfp-summary{display:inline-flex;align-items:center;gap:8px;font-size:11px;
+  color:var(--ink-2);font-weight:500}
+.lp-fit-prominent .lpfp-summary .lpfp-cap-pill{padding:2px 9px;border-radius:99px;font-size:10px;
+  font-weight:700;letter-spacing:.03em}
+.lp-fit-prominent .lpfp-summary .lpfp-cap-pill.g{background:var(--rn-g-tint);color:#1F7A5C}
+.lp-fit-prominent .lpfp-summary .lpfp-cap-pill.y{background:var(--rn-y-tint);color:#8A6B00}
+.lp-fit-prominent .lpfp-summary .lpfp-cap-pill.r{background:var(--rn-r-tint);color:#B32B2E}
 /* Sub-nav for Leader Profile — Overview | Assessment | Career | Notes */
 .lp-subnav{display:flex;align-items:stretch;gap:0;border-bottom:1px solid var(--line);margin-bottom:24px;
   padding:0 2px;background:#fff;position:sticky;top:56px;z-index:50}
@@ -6650,48 +6696,119 @@ function renderLeaderProfile(lid){
       </div>
     </div>
 
+    <!-- PINNED FACTS STRIP (v6.1) — vital demographics always visible. Sticky on scroll. -->
+    <div class="lp-facts-strip" id="lp-facts-strip">
+      <span class="lpf-item"><span class="lpf-k">Age</span><span class="lpf-v">${l.age || "—"}</span></span>
+      <span class="lpf-sep"></span>
+      <span class="lpf-item"><span class="lpf-k">GMR tenure</span><span class="lpf-v">${l.tenure} yrs</span></span>
+      <span class="lpf-sep"></span>
+      <span class="lpf-item"><span class="lpf-k">PMP</span>
+        <span class="lpf-pmp">
+          <span class="m-c ${firstPMP.code.toLowerCase()}">${firstPMP.code}</span>
+          <span class="m-a">→</span>
+          <span class="m-c ${pmpHist[1].code.toLowerCase()}">${pmpHist[1].code}</span>
+          <span class="m-a">→</span>
+          <span class="m-c ${latestPMP.code.toLowerCase()}">${latestPMP.code}</span>
+        </span>
+      </span>
+      <span class="lpf-sep"></span>
+      <span class="lpf-item"><span class="lpf-k">Flight risk</span><span class="lpf-v ${l.flightRisk==='Low'?'g':l.flightRisk==='Medium'?'y':'r'}">${l.flightRisk}</span></span>
+      <span class="lpf-sep"></span>
+      <span class="lpf-item"><span class="lpf-k">Mobility</span><span class="lpf-v">${l.openRelocate?'Willing':'Limited'}</span></span>
+      ${l.age && 60 - l.age <= 3 ? `<span class="lpf-warn">⚠ ${60 - l.age >= 0 ? "Retires in " + (60 - l.age) + " yr" + (60 - l.age === 1 ? "" : "s") : "Retirement overdue"}</span>` : ""}
+      <button class="lpf-expand" onclick="document.getElementById('lp-facts-strip').classList.toggle('expanded')">
+        View full profile <span class="lpf-chev">▾</span>
+      </button>
+    </div>
+    <!-- Full snapshot (all 16 fields) — hidden until 'View full profile' is clicked -->
+    <div class="lp-facts-full">
+      <div class="lp-snapshot">
+        <div class="lp-snap-item"><div class="k">Current role</div><div class="v">${l.role}</div></div>
+        <div class="lp-snap-item"><div class="k">Target role</div><div class="v">${l.aspiration}</div></div>
+        <div class="lp-snap-item"><div class="k">Business Unit</div><div class="v">${l.bu}</div></div>
+        <div class="lp-snap-item"><div class="k">Sector</div><div class="v">${sector}</div></div>
+        <div class="lp-snap-item"><div class="k">Function</div><div class="v">${l.function}</div></div>
+        <div class="lp-snap-item"><div class="k">Country / Location</div><div class="v">${l.country}</div></div>
+        <div class="lp-snap-item"><div class="k">Manager</div><div class="v">${l.manager}</div></div>
+        <div class="lp-snap-item"><div class="k">Date of Joining</div><div class="v">${dojYear} <span style="color:var(--ink-3);font-weight:500;font-size:11px">· ${l.tenure} yrs at GMR</span></div></div>
+        <div class="lp-snap-item"><div class="k">Overall Experience</div><div class="v">${overallExp} years <span style="color:var(--ink-3);font-weight:500;font-size:11px">· ${preGmr} yrs pre-GMR</span></div></div>
+        <div class="lp-snap-item"><div class="k">Performance (PMP)</div><div class="v">
+          <div class="pmp-mini">
+            <span class="m-code ${firstPMP.code.toLowerCase()}">${firstPMP.code}</span><span class="m-yr">${firstPMP.year}</span>
+            <span class="m-arrow">→</span>
+            <span class="m-code ${pmpHist[1].code.toLowerCase()}">${pmpHist[1].code}</span><span class="m-yr">${pmpHist[1].year}</span>
+            <span class="m-arrow">→</span>
+            <span class="m-code ${latestPMP.code.toLowerCase()}">${latestPMP.code}</span><span class="m-yr">${latestPMP.year}</span>
+          </div>
+        </div></div>
+        <div class="lp-snap-item"><div class="k">Age</div><div class="v">${l.age||"—"} yrs${l.age?` <span style="color:var(--ink-3);font-weight:500;font-size:11px">· ${l.age<40?"Under 40":l.age<=50?"40–50":l.age<=60?"51–60":"61–70"}</span>`:""}</div></div>
+        <div class="lp-snap-item"><div class="k">Retirement age</div><div class="v">60 yrs${l.age && 60 - l.age <= 3 ? ` <span style="color:var(--aon-red);font-size:11px;font-weight:700;margin-left:6px">⚠ ${60 - l.age >= 0 ? "in " + (60 - l.age) + " yr" + (60 - l.age === 1 ? "" : "s") : "overdue"}</span>` : ""}</div></div>
+        <div class="lp-snap-item"><div class="k">Flight Risk</div><div class="v">${l.flightRisk}</div></div>
+        <div class="lp-snap-item"><div class="k">Openness to Relocate</div><div class="v">${l.openRelocate?'Willing':'Limited'}</div></div>
+        <div class="lp-snap-item"><div class="k">Level</div><div class="v">${l.level}</div></div>
+        <div class="lp-snap-item"><div class="k">Leadership Persona</div><div class="v">${persona ? persona.name : "—"}</div></div>
+      </div>
+    </div>
+
     <div class="lp-body">
-      <!-- PROMINENT FUNCTIONAL FIT INPUT — always visible, above sub-tabs.
-           This is the primary input surface on the Leader Profile. -->
-      <div class="lp-fit-prominent">
-        <div class="lpfp-hd">
+      <!-- PROMINENT FUNCTIONAL FIT INPUT — collapsible, default expanded.
+           This is the primary input surface on the Leader Profile.
+           Two-way sync with Pipeline (single shared slot.fitLevel state). -->
+      ${(() => {
+        // Compute at-a-glance capture summary — how many target-role Fit ratings have been captured
+        const totRoles = targetRoles.length;
+        const capturedCount = targetRoles.filter(tr => {
+          const slot = (tr.role.slots||[]).find(sl => sl.leaderId === l.id);
+          return slot && slot.fitLevel != null;
+        }).length;
+        const captureCls = totRoles === 0 ? "" : capturedCount === totRoles ? "g" : capturedCount > 0 ? "y" : "r";
+        const captureText = totRoles === 0 ? "" : `<span class="lpfp-summary"><span class="lpfp-cap-pill ${captureCls}">${capturedCount} / ${totRoles} captured</span></span>`;
+        return `
+      <div class="lp-fit-prominent" id="lp-fit-prominent">
+        <div class="lpfp-hd" onclick="document.getElementById('lp-fit-prominent').classList.toggle('collapsed')">
           <div>
-            <div class="lpfp-title"><span class="lpfp-icon">✎</span>Capture Functional Fit for target roles</div>
+            <div class="lpfp-title"><span class="lpfp-caret">▼</span><span class="lpfp-icon">✎</span>Capture Functional Fit for target roles</div>
             <div class="lpfp-sub">Rate how well this leader matches each target role's technical / functional requirements today. Combines with Leadership Potential to derive readiness horizon. Two-way sync with the Pipeline tab.</div>
           </div>
-          <div class="lp-target-count">${targetRoles.length===0?"Not currently a successor for any role":targetRoles.length===1?"1 target role":`${targetRoles.length} target roles`}</div>
+          <div style="display:flex;align-items:center;gap:12px">
+            ${captureText}
+            <div class="lp-target-count">${totRoles===0?"Not a successor":totRoles===1?"1 target role":`${totRoles} target roles`}</div>
+          </div>
         </div>
-        ${targetRoles.length===0
-          ? `<div class="lpfp-empty">This leader is not currently named as a successor for any critical role. To capture Functional Fit, first add them as a successor from the Pipeline &raquo; Explore by role view.</div>`
-          : `<table class="lp-target-tbl">
-              <thead><tr><th>Target role</th><th>Business Unit</th><th class="center">Functional Fit</th><th class="right">Readiness</th></tr></thead>
-              <tbody>
-                ${targetRoles.map(tr=>{
-                  const slot = (tr.role.slots||[]).find(sl=>sl.leaderId===l.id);
-                  const fitKey = slot && slot.fitLevel != null ? ["low","med","high"][slot.fitLevel] : null;
-                  const slotIdx = slot ? tr.role.slots.indexOf(slot) : -1;
-                  const fitPicker = slotIdx >= 0 ? `<div class="lp-fit-inline" onclick="event.stopPropagation()">
-                    <button class="lp-fit-btn ${fitKey==='high'?'active':''}" onclick="setFitFromProfile('${tr.role.id}',${slotIdx},2,'${l.id}')" title="High fit">High</button>
-                    <button class="lp-fit-btn ${fitKey==='med'?'active':''}"  onclick="setFitFromProfile('${tr.role.id}',${slotIdx},1,'${l.id}')" title="Medium fit">Med</button>
-                    <button class="lp-fit-btn ${fitKey==='low'?'active':''}"  onclick="setFitFromProfile('${tr.role.id}',${slotIdx},0,'${l.id}')" title="Low fit">Low</button>
-                  </div>` : `<span style="color:var(--ink-4);font-size:11px">—</span>`;
-                  return `
-                  <tr>
-                    <td><b>${tr.role.title}</b></td>
-                    <td>${(tr.role.bu||"").replace("GMR ","")}</td>
-                    <td class="center">${fitPicker}</td>
-                    <td class="right"><span class="pill rn-${readClass(tr.readiness)}">${tr.readiness}</span></td>
-                  </tr>`;
-                }).join("")}
-              </tbody>
-            </table>`}
+        <div class="lpfp-body">
+          ${totRoles===0
+            ? `<div class="lpfp-empty">This leader is not currently named as a successor for any critical role. To capture Functional Fit, first add them as a successor from the Pipeline &raquo; Explore by role view.</div>`
+            : `<table class="lp-target-tbl">
+                <thead><tr><th>Target role</th><th>Business Unit</th><th class="center">Functional Fit</th><th class="right">Readiness</th></tr></thead>
+                <tbody>
+                  ${targetRoles.map(tr=>{
+                    const slot = (tr.role.slots||[]).find(sl=>sl.leaderId===l.id);
+                    const fitKey = slot && slot.fitLevel != null ? ["low","med","high"][slot.fitLevel] : null;
+                    const slotIdx = slot ? tr.role.slots.indexOf(slot) : -1;
+                    const fitPicker = slotIdx >= 0 ? `<div class="lp-fit-inline" onclick="event.stopPropagation()">
+                      <button class="lp-fit-btn ${fitKey==='high'?'active':''}" onclick="setFitFromProfile('${tr.role.id}',${slotIdx},2,'${l.id}')" title="High fit">High</button>
+                      <button class="lp-fit-btn ${fitKey==='med'?'active':''}"  onclick="setFitFromProfile('${tr.role.id}',${slotIdx},1,'${l.id}')" title="Medium fit">Med</button>
+                      <button class="lp-fit-btn ${fitKey==='low'?'active':''}"  onclick="setFitFromProfile('${tr.role.id}',${slotIdx},0,'${l.id}')" title="Low fit">Low</button>
+                    </div>` : `<span style="color:var(--ink-4);font-size:11px">—</span>`;
+                    return `
+                    <tr>
+                      <td><b>${tr.role.title}</b></td>
+                      <td>${(tr.role.bu||"").replace("GMR ","")}</td>
+                      <td class="center">${fitPicker}</td>
+                      <td class="right"><span class="pill rn-${readClass(tr.readiness)}">${tr.readiness}</span></td>
+                    </tr>`;
+                  }).join("")}
+                </tbody>
+              </table>`}
+        </div>
       </div>
+        `;
+      })()}
 
-      <!-- SUB-NAV: Overview | Assessment | Career | Notes -->
+      <!-- SUB-NAV: Overview | Assessment | Notes (Career removed — pinned facts strip covers it) -->
       <div class="lp-subnav">
         <button class="lp-sub-tab active" data-panel="overview" onclick="switchLeaderPanel('overview')">Overview</button>
         <button class="lp-sub-tab" data-panel="assessment" onclick="switchLeaderPanel('assessment')">Assessment scores</button>
-        <button class="lp-sub-tab" data-panel="career" onclick="switchLeaderPanel('career')">Career &amp; Demographics</button>
         <button class="lp-sub-tab" data-panel="notes" onclick="switchLeaderPanel('notes')">Notes &amp; Actions <span class="lp-sub-badge">${notes.length + actions.length}</span></button>
       </div>
 
@@ -6800,36 +6917,6 @@ function renderLeaderProfile(lid){
           </div>
         </div>
       </div><!-- /lp-panel-assessment -->
-
-      <!-- CAREER PANEL: Demographics + role details + performance trajectory -->
-      <div class="lp-panel" id="lp-panel-career">
-      <div class="lp-snapshot">
-        <div class="lp-snap-item"><div class="k">Current role</div><div class="v">${l.role}</div></div>
-        <div class="lp-snap-item"><div class="k">Target role</div><div class="v">${l.aspiration}</div></div>
-        <div class="lp-snap-item"><div class="k">Business Unit</div><div class="v">${l.bu}</div></div>
-        <div class="lp-snap-item"><div class="k">Sector</div><div class="v">${sector}</div></div>
-        <div class="lp-snap-item"><div class="k">Function</div><div class="v">${l.function}</div></div>
-        <div class="lp-snap-item"><div class="k">Country / Location</div><div class="v">${l.country}</div></div>
-        <div class="lp-snap-item"><div class="k">Manager</div><div class="v">${l.manager}</div></div>
-        <div class="lp-snap-item"><div class="k">Date of Joining</div><div class="v">${dojYear} <span style="color:var(--ink-3);font-weight:500;font-size:11px">· ${l.tenure} yrs at GMR</span></div></div>
-        <div class="lp-snap-item"><div class="k">Overall Experience</div><div class="v">${overallExp} years <span style="color:var(--ink-3);font-weight:500;font-size:11px">· ${preGmr} yrs pre-GMR</span></div></div>
-        <div class="lp-snap-item"><div class="k">Performance (PMP)</div><div class="v">
-          <div class="pmp-mini">
-            <span class="m-code ${firstPMP.code.toLowerCase()}">${firstPMP.code}</span><span class="m-yr">${firstPMP.year}</span>
-            <span class="m-arrow">→</span>
-            <span class="m-code ${pmpHist[1].code.toLowerCase()}">${pmpHist[1].code}</span><span class="m-yr">${pmpHist[1].year}</span>
-            <span class="m-arrow">→</span>
-            <span class="m-code ${latestPMP.code.toLowerCase()}">${latestPMP.code}</span><span class="m-yr">${latestPMP.year}</span>
-          </div>
-        </div></div>
-        <div class="lp-snap-item"><div class="k">Age</div><div class="v">${l.age||"—"} yrs${l.age?` <span style="color:var(--ink-3);font-weight:500;font-size:11px">· ${l.age<40?"Under 40":l.age<=50?"40–50":l.age<=60?"51–60":"61–70"}</span>`:""}</div></div>
-        <div class="lp-snap-item"><div class="k">Retirement age</div><div class="v">60 yrs${l.age && 60 - l.age <= 3 ? ` <span style="color:var(--aon-red);font-size:11px;font-weight:700;margin-left:6px">⚠ ${60 - l.age >= 0 ? "in " + (60 - l.age) + " yr" + (60 - l.age === 1 ? "" : "s") : "overdue"}</span>` : ""}</div></div>
-        <div class="lp-snap-item"><div class="k">Flight Risk</div><div class="v">${l.flightRisk}</div></div>
-        <div class="lp-snap-item"><div class="k">Openness to Relocate</div><div class="v">${l.openRelocate?'Willing':'Limited'}</div></div>
-        <div class="lp-snap-item"><div class="k">Level</div><div class="v">${l.level}</div></div>
-        <div class="lp-snap-item"><div class="k">Leadership Persona</div><div class="v">${persona ? persona.name : "—"}</div></div>
-      </div>
-      </div><!-- /lp-panel-career -->
 
       <!-- NOTES & ACTIONS PANEL: Notes + Development actions -->
       <div class="lp-panel" id="lp-panel-notes">
