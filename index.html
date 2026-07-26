@@ -407,10 +407,11 @@ main{padding:24px 32px 60px;max-width:1600px;margin:0 auto}
   width:13px;height:13px;background:var(--line-2);border-radius:50%;align-items:center;justify-content:center;
   font-weight:700;margin-left:4px;font-style:italic;font-family:Georgia,serif;vertical-align:middle}
 .info-tip:hover{background:var(--ink-3);color:#fff}
-.info-tip .info-tip-body{display:none;position:absolute;bottom:calc(100% + 6px);left:50%;transform:translateX(-50%);
-  background:#0B0B0B;color:#fff;padding:8px 10px;border-radius:4px;font-size:11px;font-weight:400;
-  width:240px;line-height:1.45;z-index:60;text-transform:none;letter-spacing:0;text-align:left;
-  font-family:"Helvetica Now Text","Helvetica Neue",sans-serif;font-style:normal;pointer-events:none}
+.info-tip .info-tip-body{display:none;position:absolute;bottom:calc(100% + 8px);left:50%;transform:translateX(-50%);
+  background:#0B0B0B;color:#fff;padding:10px 12px;border-radius:5px;font-size:11px;font-weight:400;
+  width:260px;line-height:1.5;z-index:9999;text-transform:none;letter-spacing:0;text-align:left;
+  font-family:"Helvetica Now Text","Helvetica Neue",sans-serif;font-style:normal;pointer-events:none;
+  box-shadow:0 6px 18px rgba(0,0,0,.25)}
 .info-tip:hover .info-tip-body{display:block}
 .info-tip .info-tip-body::after{content:"";position:absolute;top:100%;left:50%;transform:translateX(-50%);
   border:5px solid transparent;border-top-color:#0B0B0B}
@@ -821,7 +822,7 @@ main{padding:24px 32px 60px;max-width:1600px;margin:0 auto}
 /* Leadership Snapshot band — Persona + 9-Box + PMP trajectory */
 .lp-snap-band{display:grid;grid-template-columns:1.4fr 1fr 1.2fr;gap:14px;margin-bottom:24px}
 .lp-snap-card{background:#fff;border:1px solid var(--line);border-radius:8px;padding:18px 20px;
-  position:relative;overflow:hidden}
+  position:relative;overflow:visible}
 .lp-snap-card .lsc-lbl{font-size:10px;color:var(--ink-3);text-transform:uppercase;letter-spacing:.08em;
   font-weight:600;margin-bottom:10px;display:flex;align-items:center;gap:8px}
 .lp-snap-card .lsc-lbl .info-tip{margin-left:0}
@@ -832,20 +833,23 @@ main{padding:24px 32px 60px;max-width:1600px;margin:0 auto}
 .lp-snap-card.persona .persona-dims{margin-top:10px;display:flex;gap:6px;flex-wrap:wrap}
 .lp-snap-card.persona .persona-dims span{font-size:9.5px;font-weight:600;background:var(--bg-3);
   color:var(--ink-2);padding:2px 8px;border-radius:99px;letter-spacing:.02em}
-/* Mini 9-box grid card */
-.lp-snap-card.ninebox .mini-nb{display:grid;grid-template-columns:repeat(3,1fr);gap:3px;
-  aspect-ratio:1/1;max-width:150px;margin:0 auto}
+/* Mini 9-box grid card — with proper axis labels (Y = Potential, X = Performance) */
+.lp-snap-card.ninebox .mini-nb-frame{display:grid;
+  grid-template-columns:auto 1fr;grid-template-rows:1fr auto auto;
+  grid-template-areas:"yax grid" ".   xax" ".   cap";
+  gap:6px;max-width:200px;margin:0 auto;align-items:center}
+.lp-snap-card.ninebox .mini-nb-yax{grid-area:yax;writing-mode:vertical-rl;transform:rotate(180deg);
+  font-size:9px;font-weight:600;color:var(--ink-3);letter-spacing:.06em;text-transform:uppercase;
+  text-align:center;padding:2px 0;display:flex;align-items:center;justify-content:center}
+.lp-snap-card.ninebox .mini-nb-yax::before{content:"↑ ";font-size:11px;color:var(--ink-4)}
+.lp-snap-card.ninebox .mini-nb-xax{grid-area:xax;font-size:9px;font-weight:600;color:var(--ink-3);
+  letter-spacing:.06em;text-transform:uppercase;text-align:center;padding-top:4px}
+.lp-snap-card.ninebox .mini-nb-xax::after{content:" →";font-size:11px;color:var(--ink-4)}
+.lp-snap-card.ninebox .mini-nb{grid-area:grid;display:grid;grid-template-columns:repeat(3,1fr);gap:3px;aspect-ratio:1/1}
 .lp-snap-card.ninebox .mini-nb-cell{background:var(--bg-2);border-radius:3px;display:flex;
   align-items:center;justify-content:center;font-size:9px;color:var(--ink-4);font-weight:600;padding:2px}
 .lp-snap-card.ninebox .mini-nb-cell.here{background:var(--navy);color:#fff;box-shadow:0 0 0 2px var(--navy),0 2px 6px rgba(10,54,97,.35);position:relative;z-index:2}
-.lp-snap-card.ninebox .mini-nb-cell.g{background:var(--rn-g-tint);color:#1F7A5C}
-.lp-snap-card.ninebox .mini-nb-cell.y{background:var(--rn-y-tint);color:#8A6B00}
-.lp-snap-card.ninebox .mini-nb-cell.o{background:var(--rn-o-tint);color:#7A3F0F}
-.lp-snap-card.ninebox .mini-nb-cell.r{background:var(--rn-r-tint);color:#B32B2E}
-.lp-snap-card.ninebox .mini-nb-cell.here.g,.lp-snap-card.ninebox .mini-nb-cell.here.y,
-.lp-snap-card.ninebox .mini-nb-cell.here.o,.lp-snap-card.ninebox .mini-nb-cell.here.r{background:var(--navy);color:#fff}
-.lp-snap-card.ninebox .mini-nb-caption{text-align:center;margin-top:10px;font-size:11.5px;color:var(--ink-2);font-weight:600}
-.lp-snap-card.ninebox .mini-nb-axes{font-size:9px;color:var(--ink-4);text-align:center;margin-top:4px;letter-spacing:.02em}
+.lp-snap-card.ninebox .mini-nb-caption{grid-area:cap;text-align:center;margin-top:6px;font-size:11.5px;color:var(--ink-2);font-weight:600}
 /* PMP trajectory card */
 .lp-snap-card.pmp .pmp-track{display:flex;align-items:stretch;gap:8px;margin-top:4px}
 .lp-snap-card.pmp .pmp-year{flex:1;background:var(--bg-2);border-radius:5px;padding:9px 6px 10px;
@@ -864,22 +868,38 @@ main{padding:24px 32px 60px;max-width:1600px;margin:0 auto}
 .lp-snap-card.pmp .pmp-arrow{align-self:center;color:var(--ink-4);font-size:14px;font-weight:600}
 .lp-snap-card.pmp .pmp-legend{margin-top:12px;font-size:10.5px;color:var(--ink-3);line-height:1.4;text-align:center}
 .lp-snap-card.pmp .pmp-legend b{color:var(--ink-2)}
-/* Strengths / Development / Derailers 3-column block */
+/* Strengths / Development 2-column block (with narrative writeups) */
 .lp-sgd{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-bottom:24px}
-.lp-sgd-card{background:#fff;border:1px solid var(--line);border-radius:8px;padding:16px 18px}
-.lp-sgd-card .sgd-hd{font-size:10px;text-transform:uppercase;letter-spacing:.08em;font-weight:700;
-  padding-bottom:10px;margin-bottom:12px;border-bottom:2px solid;display:flex;align-items:center;gap:8px}
+.lp-sgd.two-col{grid-template-columns:1fr 1fr}
+.lp-sgd-card{background:#fff;border:1px solid var(--line);border-radius:8px;padding:18px 20px}
+.lp-sgd-card .sgd-hd{font-size:10.5px;text-transform:uppercase;letter-spacing:.08em;font-weight:700;
+  padding-bottom:12px;margin-bottom:14px;border-bottom:2px solid;display:flex;align-items:center;gap:8px}
 .lp-sgd-card.strength .sgd-hd{border-color:var(--rn-g);color:#1F7A5C}
 .lp-sgd-card.develop  .sgd-hd{border-color:var(--rn-y);color:#8A6B00}
 .lp-sgd-card.derailer .sgd-hd{border-color:var(--rn-r);color:#B32B2E}
-.lp-sgd-item{padding:8px 0;border-bottom:1px dashed var(--line-2)}
-.lp-sgd-item:last-child{border-bottom:none}
-.lp-sgd-item .sgd-name{font-size:12px;font-weight:600;color:var(--ink);display:flex;justify-content:space-between;align-items:center;gap:6px}
-.lp-sgd-item .sgd-name .sgd-score{font-size:11px;font-weight:600;padding:1px 8px;border-radius:99px;background:var(--bg-3);color:var(--ink-2)}
+.lp-sgd-item{padding:10px 0;border-bottom:1px dashed var(--line-2)}
+.lp-sgd-item:last-child{border-bottom:none;padding-bottom:2px}
+.lp-sgd-item.detailed{padding:14px 0}
+.lp-sgd-item .sgd-name{font-size:13px;font-weight:600;color:var(--ink);display:flex;justify-content:space-between;align-items:center;gap:6px}
+.lp-sgd-item .sgd-name .sgd-score{font-size:11px;font-weight:700;padding:2px 9px;border-radius:99px;background:var(--bg-3);color:var(--ink-2);font-variant-numeric:tabular-nums}
 .lp-sgd-card.strength .sgd-name .sgd-score{background:var(--rn-g-tint);color:#1F7A5C}
 .lp-sgd-card.develop  .sgd-name .sgd-score{background:var(--rn-y-tint);color:#8A6B00}
 .lp-sgd-card.derailer .sgd-name .sgd-score{background:var(--rn-r-tint);color:#B32B2E}
 .lp-sgd-item .sgd-desc{font-size:11px;color:var(--ink-3);line-height:1.45;margin-top:4px}
+.lp-sgd-item .sgd-narrative{font-size:12px;color:var(--ink-2);line-height:1.55;margin-top:8px}
+.lp-sgd-item .sgd-narrative b{color:var(--ink);font-weight:600}
+/* Compact ADEPT-15 derailer block — shown lower in the profile, alongside GLIDE / rater breakdown */
+.lp-derailer-block{background:#fff;border:1px solid var(--line);border-radius:8px;padding:18px 22px;margin-bottom:24px;
+  border-left:4px solid var(--rn-r)}
+.lp-derailer-block .der-hd{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;
+  color:#B32B2E;margin-bottom:6px;display:flex;align-items:center;gap:8px}
+.lp-derailer-block .der-hd-sub{font-size:11px;color:var(--ink-3);font-weight:500;text-transform:none;letter-spacing:0}
+.lp-derailer-block .der-lead{font-size:12px;color:var(--ink-2);line-height:1.55;margin-bottom:14px;
+  padding-bottom:14px;border-bottom:1px dashed var(--line-2)}
+.lp-derailer-block .der-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.lp-derailer-block .der-item .der-name{font-size:13px;font-weight:600;color:var(--ink);display:flex;justify-content:space-between;align-items:center;gap:6px}
+.lp-derailer-block .der-item .der-score{font-size:11px;font-weight:700;padding:2px 9px;border-radius:99px;background:var(--rn-r-tint);color:#B32B2E;font-variant-numeric:tabular-nums}
+.lp-derailer-block .der-item .der-desc{font-size:12px;color:var(--ink-2);line-height:1.55;margin-top:6px}
 /* PMP mini-inline within snapshot grid item */
 .pmp-mini{display:flex;gap:5px;align-items:baseline;margin-top:2px}
 .pmp-mini .m-code{font-size:12px;font-weight:700}
@@ -966,7 +986,7 @@ main{padding:24px 32px 60px;max-width:1600px;margin:0 auto}
 .lp-coll-body{display:none;padding:0 28px 20px}
 .lp-coll.open .lp-coll-body{display:block}
 
-/* GLIDE trait rows */
+/* GLIDE trait rows (legacy — kept in case anything still references) */
 .trait-hd{display:grid;grid-template-columns:200px 1fr 1fr;gap:12px;padding:8px 0;
   border-bottom:1px solid var(--line);font-size:10px;text-transform:uppercase;letter-spacing:.06em;
   color:var(--ink-3);font-weight:600}
@@ -983,6 +1003,47 @@ main{padding:24px 32px 60px;max-width:1600px;margin:0 auto}
 .tr-fill.strong{background:#3E9F7E}
 .tr-score{font-weight:600;font-size:11px;min-width:22px;text-align:right}
 .na{color:var(--ink-4);font-size:11px;font-style:italic}
+
+/* GLIDE aggregate rows (new — 70/30 aggregate with expandable Potential + Perception) */
+.gl-hd{display:grid;grid-template-columns:240px 1fr;gap:16px;padding:10px 4px;
+  border-bottom:1px solid var(--line);font-size:10px;text-transform:uppercase;letter-spacing:.06em;
+  color:var(--ink-3);font-weight:600;align-items:baseline}
+.gl-hd-note{margin-left:10px;color:var(--ink-4);font-weight:500;text-transform:none;letter-spacing:0;font-size:10.5px}
+.gl-trait-row{border-bottom:1px dashed var(--line-2)}
+.gl-trait-row:last-of-type{border-bottom:none}
+.gl-trait-hd{display:grid;grid-template-columns:240px 1fr;gap:16px;padding:11px 4px;
+  align-items:center;cursor:pointer;transition:background .12s}
+.gl-trait-hd:hover{background:var(--bg-2)}
+.gl-trait-name{font-size:12.5px;font-weight:600;color:var(--ink);display:flex;align-items:center;gap:8px}
+.gl-trait-name .gl-caret{color:var(--ink-4);font-size:9px;transition:transform .15s;display:inline-block;width:10px}
+.gl-trait-row.expanded .gl-caret{transform:rotate(90deg)}
+.gl-bl-tag{font-size:9px;font-weight:600;background:#EEE7F6;color:#6B3F9F;padding:2px 7px;border-radius:99px;
+  letter-spacing:.03em;text-transform:uppercase;margin-left:4px}
+/* Bars — unified style used by aggregate row and breakdown rows */
+.gl-bar-wrap{display:flex;align-items:center;gap:10px}
+.gl-bar-track{flex:1;height:8px;background:var(--line-2);border-radius:99px;overflow:hidden}
+.gl-bar-fill{height:100%;border-radius:99px;transition:width .3s}
+.gl-bar-fill.low{background:var(--rn-r)}
+.gl-bar-fill.med{background:var(--rn-o)}
+.gl-bar-fill.high{background:var(--rn-y)}
+.gl-bar-fill.strong{background:var(--rn-g)}
+.gl-bar-fill.na{background:var(--line-2)}
+.gl-bar-score{font-weight:700;font-size:12px;min-width:32px;text-align:right;color:var(--ink);font-variant-numeric:tabular-nums}
+/* Expand region — hidden by default */
+.gl-trait-expand{display:none;padding:6px 4px 14px;margin-left:18px;
+  border-left:2px solid var(--line);padding-left:14px}
+.gl-trait-row.expanded .gl-trait-expand{display:block}
+.gl-sub-row{display:grid;grid-template-columns:240px 1fr;gap:16px;padding:6px 0;align-items:center}
+.gl-sub-lbl{font-size:11px;color:var(--ink-2);display:flex;flex-direction:column;gap:2px}
+.gl-sub-tag{display:inline-block;font-size:10px;font-weight:700;padding:2px 8px;border-radius:99px;
+  letter-spacing:.03em;text-transform:uppercase;width:fit-content}
+.gl-sub-tag.pt{background:#DDECFE;color:#0A3661}
+.gl-sub-tag.pc{background:#F1E4CF;color:#7A4E00}
+.gl-sub-weight{font-size:10px;color:var(--ink-3);font-weight:500;letter-spacing:0}
+.gl-anchor{grid-column:1/-1;font-size:11px;color:var(--ink-3);font-style:italic;margin-top:8px;padding:8px 10px;
+  background:var(--bg-2);border-radius:4px;line-height:1.45}
+.gl-anchor::before{content:"GMR strategic anchor · ";color:var(--ink-2);font-style:normal;font-weight:600}
+.gl-trait-row.bl .gl-trait-hd{background:linear-gradient(90deg, rgba(238,231,246,.35) 0%, transparent 60%)}
 
 /* Comment forms */
 .form-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-bottom:6px}
@@ -2607,7 +2668,7 @@ const AI_ZONE_ACTIONS = {
   "At-risk":          {tone:"r", headline:"Reskill or reposition",       action:"Change-averse and low AI use. Confront directly — reskilling plan with clear timelines or reposition to a legacy-heavy role."}
 };
 const READINESS_MATRIX_ZONES = [
-  ["Ready in 2–3 years","Ready in 1 year","Ready now"],
+  ["Ready in 2–3 years","Ready in 1 year","Ready Now"],
   ["Ready in 2–3 years","Ready in 2–3 years","Ready in 1 year"],
   ["Ready in 4+ years","Ready in 4+ years","Ready in 2–3 years"]
 ];
@@ -5533,9 +5594,9 @@ function renderSuccRoleTable(){
       const fitBtns = `<div class="succ-fit-wrap" onclick="event.stopPropagation()">
         <div class="succ-fit-lbl">Functional Fit${fitTip}</div>
         <div class="succ-fit-buttons">
-          <button data-fit="low"  class="${fitKey==='low'?'active':''}"  onclick="setFitInline('${r.id}',${i},0)" title="Low fit">Low</button>
-          <button data-fit="med"  class="${fitKey==='med'?'active':''}"  onclick="setFitInline('${r.id}',${i},1)" title="Medium fit">Med</button>
-          <button data-fit="high" class="${fitKey==='high'?'active':''}" onclick="setFitInline('${r.id}',${i},2)" title="High fit">High</button>
+          <button data-fit="high" class="${fitKey==='high'?'active':''}" onclick="setFitInline('${r.id}',${i},2)" title="High fit — successor already has the functional skills to step in">High</button>
+          <button data-fit="med"  class="${fitKey==='med'?'active':''}"  onclick="setFitInline('${r.id}',${i},1)" title="Medium fit — partial functional skills; needs targeted development">Med</button>
+          <button data-fit="low"  class="${fitKey==='low'?'active':''}"  onclick="setFitInline('${r.id}',${i},0)" title="Low fit — substantial functional gap to close">Low</button>
         </div>
       </div>`;
       const derivedLbl = sl.fitLevel != null ? "→ " + (sl.readiness || readiness) : "";
@@ -5964,6 +6025,53 @@ function derivePMPHistory(leader){
     {year: 2025, ..._PMP_LEVELS[clamp(idx25)]}
   ];
 }
+// Detailed narrative library — richer 2-3 sentence writeups per trait,
+// used on the Leader Profile Strengths + Development block. Combines:
+//   - what was observed at the DC / 360°
+//   - how it plays out in a GMR business context
+//   - the "so what" for development / role fit
+const TRAIT_STRENGTH_NARRATIVE = {
+  "Transformative Execution":"Consistently anchors ambiguous mandates to a sequenced delivery plan. In the DC strategy exercise, translated an open-ended airport-expansion brief into stage-gated milestones with clear ownership — the panel noted this was one of the sharpest execution instincts of the day. This is exactly the muscle GMR needs on Bhogapuram, Nagpur and the international portfolio, where multi-year concessions live or die on structured follow-through.",
+  "People Leadership":"Genuinely invests in team development — adapts coaching tone to the individual, draws people out rather than diagnosing at them. In the role-play, shifted from directive to enquiring mid-conversation once the coachee's real concern surfaced. This is a real asset for the 2030 workforce plan, where scaling talent depth (particularly at LC / LD) requires leaders who develop others rather than just deliver through them.",
+  "Collaborative Leadership":"Builds alignment across function heads without diluting the point of view. In the cross-BU simulation, absorbed challenge from Airports and Energy peers, restated their concerns accurately, and moved to a shared position — the marker of collaborative rather than merely consultative leadership. Anchors well in the Airports × Energy × Highways synergy agenda and in JV / PPP settings where multiple principals must land in the same place.",
+  "Resilience":"Composed under sustained pressure — decision quality holds as the situation intensifies. In the DC crisis scenario, re-anchored the team on facts when the room was becoming emotional, without dampening urgency. This is the trait that carries leaders through regulatory shocks, long-gestation project delays, and the multi-decade concession lifecycle GMR operates in.",
+  "Adaptability":"Genuinely re-thinks position when new information changes the picture — not defensive of the original plan. Pivoted approach mid-exercise when the panel introduced a policy-shift twist, without either capitulating or over-anchoring on the initial view. A material asset for the energy transition + digital transformation agenda, where the operating environment is genuinely fluid.",
+  "Entrepreneurial":"Frames growth opportunities as calibrated bets — stages exposure, holds optionality open. In the new-vertical exercise, sequenced the go/no-go into 3-, 6-, and 12-month decision points rather than a single binary choice. This is the growth stance GMR needs on international airports, renewable energy, and any adjacent-market entry where the pattern is real but the size of the prize is still forming.",
+  "Learning Agility":"Updates the mental model in real time. Asked substantive, non-defensive questions throughout the panel and integrated new inputs into subsequent answers — visible evidence of a curious rather than performing stance. Central to the AI / digital transformation agenda, where the leaders who compound over the next 3 years will be the ones who can genuinely learn new operating models rather than adapting old ones.",
+  "Cultural Synergy":"Reads and adapts across cultural contexts with visible ease. In peer feedback, described as a leader who can move between the international portfolio (Cebu, Crete, Medan) and Indian operations without missing the local social code. This is a real edge on GMR's international expansion arc, where technical excellence alone doesn't unlock JV / regulatory / partner trust.",
+  "Trust & Loyalty":"Rated highly across 360° raters for integrity and reliability — 'does what she says' is a recurring peer verbatim. Anchors particularly well in government / regulator relationships and family-business governance settings, where long-run trust compounds and cannot be manufactured on demand.",
+  "Energy & Tenacity":"Sustained energy that outlasts the initial excitement of a project. Peer raters flagged 'still pushing at month 18' as characteristic — precisely the stamina profile that carries long-gestation infra work through the trough."
+};
+const TRAIT_DEVELOPMENT_NARRATIVE = {
+  "Transformative Execution":"Tends to work at the concept level — execution details are left implicit and the panel had to draw them out. In the strategy exercise, structured the 'what' clearly but under-specified the 'how' and 'by when', leaving the group unclear on next steps. For any P&L or delivery-heavy stretch, structured execution discipline (RACI, milestones, weekly cadence) is the muscle to build — likely via a 6-month secondment as a Program Director on a live concession.",
+  "People Leadership":"Under-invests in the developmental conversation — quick to diagnose, slow to draw the individual out. In the coaching role-play, gave the answer within 90 seconds; the coachee never actually named their real issue. This will become a limiter as team scope grows past ~50 people, where a leader can no longer solve every problem personally. A structured coaching-skills programme (ICF-accredited, 6 months) is the intervention with the best return.",
+  "Collaborative Leadership":"Defaults to solo problem-solving. In the cross-functional exercise, moved to a solution before the group had converged, missing the co-creation that would have secured commitment from Airports and Energy peers. This is manageable in a single-BU role but becomes a blocker in Group / cross-BU roles where influence-without-authority is the currency. A cross-BU project sponsor role (12–18 months) is the practical development vehicle.",
+  "Resilience":"Visibly strained in the crisis scenario — pace of decision-making degraded and body language became defensive as pressure built. This is a real risk for regulatory-crisis or safety-incident settings, where the leader's composure sets the room's temperature. Coaching around personal stress management + a stretch on a live crisis simulation (Aon-led) would be the fastest way to build this.",
+  "Adaptability":"Anchored heavily on the initial plan and had to be prompted twice to reconsider even after new information landed. In an energy-transition or digital-disruption context, this becomes a genuine liability — the leader who can't re-set is the leader who executes yesterday's plan into today's market. Rotational exposure to a fast-moving business (Innovex, digital, or a startup partnership) is the highest-leverage development.",
+  "Entrepreneurial":"Frames the new-vertical question conservatively — risk instinct is muted, protective of the base business. In the exercise, defaulted to 'let's pilot first' when the room was already at the pilot stage. Not disqualifying for operational scale-up roles, but a real ceiling for any growth-charter role (international expansion, new energy, adjacent markets). A structured intrapreneurship programme + P&L accountability on a new business unit is the development path.",
+  "Learning Agility":"Deflected panel challenge with prepared views rather than genuinely re-thinking the position. This is the trait most correlated with 'plateau at the next stretch' in Aon's global benchmark — a leader who can't learn a new operating model gets left behind by the very transformation they're meant to lead. External board exposure + a structured AI / digital immersion (3–6 months) is the fastest re-set.",
+  "Cultural Synergy":"Reads mono-culturally in international / cross-BU exercises — misses second-order cues, defaults to India-context assumptions. For any role that touches the international portfolio (Cebu, Crete, Medan) or cross-BU alliances, this becomes a real barrier. A 12-month international assignment or JV-lead exposure is the material development.",
+  "Trust & Loyalty":"360° raters flagged 'says different things to different audiences' as a mid-cycle concern. This is manageable at a single-BU level but becomes a Group-level integrity issue at CXO scale. Structured stakeholder-management coaching + a visible enterprise-wide project where consistency is publicly observed is the corrective path.",
+  "Energy & Tenacity":"Peer raters describe an 'early sprint, mid-project fade' pattern. For long-gestation infra work, this pattern doesn't clear the bar. A stretch on a 24-month milestone-heavy programme with visible checkpoint accountability is the development frame."
+};
+// Watch-outs / Derailer narratives — used in the compact ADEPT-15 block
+const DERAILER_NARRATIVE = {
+  "Drive":"Weak urgency signals in the DC; inconsistent follow-through on delivery. Risks a 'started but not finished' pattern on complex multi-BU programs.",
+  "Structure":"Ad-hoc style — high energy but low planning discipline. Introduces quality and consistency risk at operational scale.",
+  "Conceptual":"Prefers concrete / present-focused work. Limited comfort with the abstraction and long-term formulation that strategy roles demand.",
+  "Flexibility":"Preference for known ways of working. Friction with change agendas — including the energy transition and digital transformation programs.",
+  "Mastery":"Low appetite for continuous skill building. Slows AI / digital capability adoption; risks obsolescence relative to peers who compound learning.",
+  "Ambition":"Contentment with current scope. Signals plateau risk for the successor bench — will need explicit stretch to move up.",
+  "Power":"Low motivation to influence and lead. Under-leads in complex stakeholder settings (JV, regulator, government).",
+  "Assertiveness":"Hesitant to take charge in ambiguous situations. Risk of decision-delay in high-stakes, time-critical calls.",
+  "Liveliness":"Reserved presence — may struggle to energise or rally larger teams through inspirational moments.",
+  "Composure":"Stress shows as visible tension. Real risk in ambiguous, high-stakes settings (regulatory, safety, crisis) where composure sets the room.",
+  "Positivity":"Cynical / negative tone. Dampens team morale over the long haul, particularly in setback-heavy environments like long-gestation infra.",
+  "Awareness":"Limited self-insight. Resistance to development feedback; struggles to see own impact — a real ceiling on coachability.",
+  "Cooperativeness":"Preference for solo action. Meaningful friction in cross-BU synergy and JV settings that depend on genuine partnership.",
+  "Sensitivity":"Blunt / stoic tone. Weaker emotional connection with teams — will show up as engagement and retention issues over time.",
+  "Humility":"Ego-driven style. Erodes trust over time; undermines collaborative governance and family-business fit."
+};
 // Strengths / Development / Derailers from GLIDE PT traits (non-BL) + ADEPT-15 low dimensions
 function deriveStrengthsGapsDerailers(leader){
   const ptTraits = TRAITS.filter(t => !BUSINESS_LEVERS.includes(t))
@@ -6109,15 +6217,82 @@ function renderLeaderProfile(lid){
   const pmpTrend = _PMP_LEVELS.findIndex(p=>p.code===latestPMP.code) - _PMP_LEVELS.findIndex(p=>p.code===firstPMP.code);
   const pmpArrow = pmpTrend > 0 ? "↑" : pmpTrend < 0 ? "↓" : "→";
 
-  const traitRow = (t)=>{
-    const bar = (v)=>{
-      if(v==null) return `<span class="na">n/a</span>`;
-      const cls = v<3.2?"low":v<3.5?"med":v<4.0?"high":"strong";
-      return `<div class="tr-lens"><div class="tr-bar"><div class="tr-fill ${cls}" style="width:${Math.round(100*v/5)}%"></div></div><div class="tr-score">${v.toFixed(1)}</div></div>`;
-    };
-    return `<div class="trait-row">
-      <div class="tr-name">${t}</div>
-      ${bar(l.traits[t].PC)}${bar(l.traits[t].PT)}
+  // Model 2 style Perception score per trait:
+  //   0.5 * Manager + 0.5 * average(non-self, non-manager categories that are available)
+  //   Falls back to PC average if per-rater breakdown missing.
+  const _perceptionM2 = (trait) => {
+    const rb = l.perceptionByRater && l.perceptionByRater[trait];
+    if(!rb) return l.traits[trait] ? l.traits[trait].PC : null;
+    const others = [rb.peer, rb.direct].filter(v => v != null);
+    if(rb.manager != null && others.length > 0){
+      const avgOthers = others.reduce((s,v)=>s+v, 0) / others.length;
+      return 0.5 * rb.manager + 0.5 * avgOthers;
+    }
+    return l.traits[trait].PC;
+  };
+  // Aggregate score: 70% Potential + 30% Perception for 7 non-BL traits;
+  // 100% Perception for 3 Business Levers (Potential not assessed via DC for BL)
+  const _traitAggregate = (trait) => {
+    const perc = _perceptionM2(trait);
+    if(BUSINESS_LEVERS.includes(trait)) return perc;
+    const pot = l.traits[trait] ? l.traits[trait].PT : null;
+    if(pot == null) return perc;
+    if(perc == null) return pot;
+    return 0.7 * pot + 0.3 * perc;
+  };
+  const _scoreCls = v => v==null?"na" : v<3.2?"low" : v<3.5?"med" : v<4.0?"high" : "strong";
+  const bar = (v, widthPct) => {
+    if(v==null) return `<span class="na">n/a</span>`;
+    const cls = _scoreCls(v);
+    const w = widthPct != null ? widthPct : Math.round(100*v/5);
+    return `<div class="gl-bar-wrap"><div class="gl-bar-track"><div class="gl-bar-fill ${cls}" style="width:${w}%"></div></div><div class="gl-bar-score">${v.toFixed(1)}</div></div>`;
+  };
+  const traitRow = (t, idx)=>{
+    const agg = _traitAggregate(t);
+    const pot = l.traits[t] ? l.traits[t].PT : null;
+    const perc = _perceptionM2(t);
+    const isBL = BUSINESS_LEVERS.includes(t);
+    const strategicAnchor = TRAIT_STRATEGIC_ANCHOR[t] || "";
+    const rowId = `gl-row-${l.id}-${idx}`;
+    // Breakdown rows: for non-BL — Potential (70%) + Perception (30%); for BL — Perception (100%) only
+    const breakdown = isBL ? `
+      <div class="gl-sub-row">
+        <div class="gl-sub-lbl">
+          <span class="gl-sub-tag pc">Perception</span>
+          <span class="gl-sub-weight">100% (Business Lever — 360° only)</span>
+        </div>
+        ${bar(perc)}
+      </div>
+      <div class="gl-anchor">${strategicAnchor}</div>
+    ` : `
+      <div class="gl-sub-row">
+        <div class="gl-sub-lbl">
+          <span class="gl-sub-tag pt">Potential</span>
+          <span class="gl-sub-weight">70% weight · GLIDE Development Centre</span>
+        </div>
+        ${bar(pot)}
+      </div>
+      <div class="gl-sub-row">
+        <div class="gl-sub-lbl">
+          <span class="gl-sub-tag pc">Perception</span>
+          <span class="gl-sub-weight">30% weight · 360° Model 2 (0.5·Mgr + 0.5·avg others)</span>
+        </div>
+        ${bar(perc)}
+      </div>
+      <div class="gl-anchor">${strategicAnchor}</div>
+    `;
+    return `<div class="gl-trait-row ${isBL?'bl':''}" id="${rowId}">
+      <div class="gl-trait-hd" onclick="document.getElementById('${rowId}').classList.toggle('expanded')">
+        <div class="gl-trait-name">
+          <span class="gl-caret">▶</span>
+          <span>${t}</span>
+          ${isBL ? `<span class="gl-bl-tag">Business Lever</span>` : ""}
+        </div>
+        ${bar(agg)}
+      </div>
+      <div class="gl-trait-expand">
+        ${breakdown}
+      </div>
     </div>`;
   };
 
@@ -6194,18 +6369,21 @@ function renderLeaderProfile(lid){
         </div>
         <div class="lp-snap-card ninebox">
           <div class="lsc-lbl">9-Box Position <span class="info-tip" tabindex="0" aria-label="What is the 9-Box?">i<span class="info-tip-body"><b>9-Box Grid</b> plots Performance (horizontal) × Potential (vertical). Position determines Future Readiness classification and drives development / succession decisions. Top-right = Future Leader; bottom-left = Under-performer.</span></span></div>
-          <div class="mini-nb">
-            ${[0,1,2].map(rr => [0,1,2].map(cc => {
-              const isHere = rr === l.nineBoxRow && cc === l.nineBoxCol;
-              const label = NINEBOX_ZONES[rr][cc];
-              const bg = _PALETTE_NB[rr][cc];
-              // Choose text colour for contrast on tinted background
-              const tintStyle = isHere ? "" : `style="background:${bg}33;color:${bg === '#6BC9A6' ? '#1F7A5C' : bg === '#F5CE3E' ? '#8A6B00' : bg === '#F5A45A' ? '#7A3F0F' : bg === '#EF4B4E' ? '#B32B2E' : '#1E5A9F'}"`;
-              return `<div class="mini-nb-cell ${isHere?'here':''}" ${tintStyle} title="${label}">${isHere ? "★" : ""}</div>`;
-            }).join("")).join("")}
+          <div class="mini-nb-frame">
+            <div class="mini-nb-yax">Potential</div>
+            <div class="mini-nb">
+              ${[0,1,2].map(rr => [0,1,2].map(cc => {
+                const isHere = rr === l.nineBoxRow && cc === l.nineBoxCol;
+                const label = NINEBOX_ZONES[rr][cc];
+                const bg = _PALETTE_NB[rr][cc];
+                // Choose text colour for contrast on tinted background
+                const tintStyle = isHere ? "" : `style="background:${bg}33;color:${bg === '#6BC9A6' ? '#1F7A5C' : bg === '#F5CE3E' ? '#8A6B00' : bg === '#F5A45A' ? '#7A3F0F' : bg === '#EF4B4E' ? '#B32B2E' : '#1E5A9F'}"`;
+                return `<div class="mini-nb-cell ${isHere?'here':''}" ${tintStyle} title="${label}">${isHere ? "★" : ""}</div>`;
+              }).join("")).join("")}
+            </div>
+            <div class="mini-nb-xax">Performance</div>
+            <div class="mini-nb-caption">${l.nineBox}</div>
           </div>
-          <div class="mini-nb-caption">${l.nineBox}</div>
-          <div class="mini-nb-axes">↑ Potential · Performance →</div>
         </div>
         <div class="lp-snap-card pmp">
           <div class="lsc-lbl">Performance (PMP) · 3-year trajectory <span class="info-tip" tabindex="0" aria-label="What are the PMP codes?">i<span class="info-tip-body"><b>PMP</b> is GMR's annual performance rating.<br><b>OP</b> — Outstanding Performance<br><b>EP</b> — Exceeds Performance<br><b>VGP</b> — Very Good Performance<br><b>NVGP</b> — Needs Very Good Performance</span></span></div>
@@ -6223,26 +6401,19 @@ function renderLeaderProfile(lid){
         </div>
       </div>
 
-      <div class="lp-sgd">
+      <div class="lp-sgd two-col">
         <div class="lp-sgd-card strength">
-          <div class="sgd-hd">Signature Strengths <span style="margin-left:auto;font-size:9px;color:var(--ink-4);letter-spacing:0;text-transform:none;font-weight:500">from GLIDE Potential</span></div>
-          ${sgd.strengths.map(s => `<div class="lp-sgd-item">
+          <div class="sgd-hd">Areas of Strength <span style="margin-left:auto;font-size:9px;color:var(--ink-4);letter-spacing:0;text-transform:none;font-weight:500">Top 3 traits from GLIDE</span></div>
+          ${sgd.strengths.map(s => `<div class="lp-sgd-item detailed">
             <div class="sgd-name">${s.trait}<span class="sgd-score">${s.pt.toFixed(1)}/5</span></div>
-            <div class="sgd-desc">${TRAIT_STRATEGIC_ANCHOR[s.trait] || ""}</div>
+            <div class="sgd-narrative">${TRAIT_STRENGTH_NARRATIVE[s.trait] || `Notable observed strength in ${s.trait} across the Development Centre. ${TRAIT_STRATEGIC_ANCHOR[s.trait] ? "Anchors well in " + TRAIT_STRATEGIC_ANCHOR[s.trait].toLowerCase() + "." : ""}`}</div>
           </div>`).join("")}
         </div>
         <div class="lp-sgd-card develop">
-          <div class="sgd-hd">Development Areas <span style="margin-left:auto;font-size:9px;color:var(--ink-4);letter-spacing:0;text-transform:none;font-weight:500">from GLIDE Potential</span></div>
-          ${sgd.development.map(d => `<div class="lp-sgd-item">
+          <div class="sgd-hd">Areas of Development <span style="margin-left:auto;font-size:9px;color:var(--ink-4);letter-spacing:0;text-transform:none;font-weight:500">Bottom 2 traits from GLIDE</span></div>
+          ${sgd.development.map(d => `<div class="lp-sgd-item detailed">
             <div class="sgd-name">${d.trait}<span class="sgd-score">${d.pt.toFixed(1)}/5</span></div>
-            <div class="sgd-desc">${TRAIT_STRATEGIC_ANCHOR[d.trait] || ""}</div>
-          </div>`).join("")}
-        </div>
-        <div class="lp-sgd-card derailer">
-          <div class="sgd-hd">Watch-outs / Derailers <span style="margin-left:auto;font-size:9px;color:var(--ink-4);letter-spacing:0;text-transform:none;font-weight:500">from ADEPT-15</span></div>
-          ${sgd.derailers.map(d => `<div class="lp-sgd-item">
-            <div class="sgd-name">${d.d}<span class="sgd-score">${d.v.toFixed(1)}/9</span></div>
-            <div class="sgd-desc">${(ADEPT_MAP[d.d] && ADEPT_MAP[d.d].low) || ""}</div>
+            <div class="sgd-narrative">${TRAIT_DEVELOPMENT_NARRATIVE[d.trait] || `Gap observed in ${d.trait} at the Development Centre. Recommended focus area for the next 12–18 months.`}</div>
           </div>`).join("")}
         </div>
       </div>
@@ -6308,30 +6479,50 @@ function renderLeaderProfile(lid){
         <div class="score-tile ${scoreCls(l.fitToRole)}">
           <div class="st-lbl">Perception</div>
           <div class="st-main"><span class="st-val">${l.fitToRole.toFixed(1)}</span><span class="st-of">/ 5</span></div>
-          <div class="st-lens">from 360° feedback (PC lens) · click below for rater breakdown</div>
+          <div class="st-lens">from 360° feedback (PC lens) · per-rater breakdown below the GLIDE trait list</div>
           ${arc(l.fitToRole/5*100)}
-        </div>
-      </div>
-      <!-- Perception rater-breakdown expandable table -->
-      <div class="perception-breakdown" id="pb-${lid}">
-        <div class="pb-toggle" onclick="this.parentElement.classList.toggle('open')">
-          <span class="pb-caret">▶</span>
-          <span>Rater breakdown — Manager / Peer / Direct Reports</span>
-        </div>
-        <div class="pb-body">
-          ${renderRaterBreakdown(l)}
         </div>
       </div>
     </div>
 
     <div class="lp-coll coll open">
-      <div class="lp-coll-hd" onclick="toggleColl(this)"><span class="ic">▶</span><h4>GLIDE profile — 10 traits × 3 lenses</h4></div>
+      <div class="lp-coll-hd" onclick="toggleColl(this)"><span class="ic">▶</span><h4>GLIDE profile — 10 traits · aggregate score (70% Potential + 30% Perception)</h4></div>
       <div class="lp-coll-body">
-        <div class="trait-hd">
-          <div>Trait</div><div>Perception (PC)</div><div>Potential (PT)</div>
+        <div class="gl-hd">
+          <div class="gl-hd-name">Trait</div>
+          <div class="gl-hd-bar">Aggregate score <span class="gl-hd-note">tap row to see Potential + Perception breakdown</span></div>
         </div>
-        ${TRAITS.map(traitRow).join("")}
-        <div class="muted" style="margin-top:8px">Business Levers assessed via 360° only, per GLIDE framework. Personality (ADEPT-15) is used as background input to Potential but not shown as a separate decision score.</div>
+        ${TRAITS.map((t,i)=>traitRow(t,i)).join("")}
+        <div class="muted" style="margin-top:12px;font-size:11px;color:var(--ink-3);line-height:1.5">
+          <b>How the aggregate is computed:</b> For the 7 leadership traits assessed at the Development Centre, aggregate = 70% Potential (DC) + 30% Perception (360° Model 2). For the 3 Business Levers (Cultural Synergy, Trust &amp; Loyalty, Energy &amp; Tenacity), aggregate = 100% Perception — these are assessed via 360° only, per the GLIDE framework. Model 2 Perception = 0.5 · Manager + 0.5 · average of other rater categories available (Direct Reports, Peers, Others). Personality (ADEPT-15) is used as background input to Potential and appears in the ADEPT-15 Watch-outs card below.
+        </div>
+      </div>
+    </div>
+
+    <!-- Perception rater-breakdown moved below GLIDE — allows drill-down after seeing overall trait picture -->
+    <div class="lp-coll coll open" style="padding:0 28px 4px">
+      <div style="padding:16px 0 8px">
+        <div class="perception-breakdown" id="pb-${lid}" style="margin-bottom:20px">
+          <div class="pb-toggle" onclick="this.parentElement.classList.toggle('open')">
+            <span class="pb-caret">▶</span>
+            <span>360° Rater Breakdown — Manager / Peer / Direct Reports (per-trait)</span>
+          </div>
+          <div class="pb-body">
+            ${renderRaterBreakdown(l)}
+          </div>
+        </div>
+
+        <!-- ADEPT-15 Watch-outs / Derailers — compact block, personality-level watch-outs -->
+        <div class="lp-derailer-block">
+          <div class="der-hd">ADEPT-15 Watch-outs &middot; Personality-level Derailers <span class="der-hd-sub">from ADEPT-15 personality assessment · lowest 2 dimensions</span></div>
+          <div class="der-lead">Derailers describe how <b>strengths can misfire under pressure</b> or where personality traits sit at levels that create predictable risk. These are personality-level patterns, distinct from the trait-level development areas above — they inform coaching focus rather than a stretch-role choice.</div>
+          <div class="der-grid">
+            ${sgd.derailers.map(d => `<div class="der-item">
+              <div class="der-name">${d.d}<span class="der-score">${d.v.toFixed(1)}/9</span></div>
+              <div class="der-desc">${DERAILER_NARRATIVE[d.d] || (ADEPT_MAP[d.d] && ADEPT_MAP[d.d].low) || ""}</div>
+            </div>`).join("")}
+          </div>
+        </div>
       </div>
     </div>
 
