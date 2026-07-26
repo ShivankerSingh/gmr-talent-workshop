@@ -364,15 +364,29 @@ main{padding:24px 32px 60px;max-width:1600px;margin:0 auto}
 .pipe-progress-strip .pp-val.g{color:#0F8759}
 .pipe-progress-strip .pp-val.a{color:#8A6D00}
 .pipe-progress-strip .pp-val.r{color:#B00019}
-/* Inline Fit buttons on successor cards */
-.succ-fit-buttons{display:flex;gap:2px;margin-top:6px}
-.succ-fit-buttons button{flex:1;background:rgba(255,255,255,.25);border:none;
-  padding:3px 4px;font-size:9px;font-weight:700;color:rgba(255,255,255,.9);cursor:pointer;
-  border-radius:2px;font-family:inherit;text-transform:uppercase;letter-spacing:.04em}
-.succ-fit-buttons button:hover{background:rgba(255,255,255,.4)}
-.succ-fit-buttons button.active{background:#fff;color:var(--ink)}
-.succ-card.r1 .succ-fit-buttons button{color:rgba(0,0,0,.75)}
-.succ-card.r1 .succ-fit-buttons button.active{background:var(--ink);color:#fff}
+/* Inline Fit input on successor cards — larger, more discoverable */
+.succ-fit-wrap{margin-top:8px;padding-top:7px;border-top:1px dashed rgba(255,255,255,.28)}
+.succ-card.r1 .succ-fit-wrap{border-top-color:rgba(0,0,0,.15)}
+.succ-fit-lbl{font-size:9px;color:rgba(255,255,255,.75);font-weight:600;text-transform:uppercase;
+  letter-spacing:.06em;display:flex;align-items:center;margin-bottom:4px}
+.succ-card.r1 .succ-fit-lbl{color:rgba(0,0,0,.6)}
+.succ-fit-buttons{display:flex;gap:3px}
+.succ-fit-buttons button{flex:1;background:rgba(255,255,255,.22);border:1px solid rgba(255,255,255,.28);
+  padding:4px 2px;font-size:10px;font-weight:700;color:rgba(255,255,255,.95);cursor:pointer;
+  border-radius:3px;font-family:inherit;text-transform:uppercase;letter-spacing:.04em;transition:all .12s}
+.succ-fit-buttons button:hover{background:rgba(255,255,255,.4);border-color:rgba(255,255,255,.45)}
+.succ-fit-buttons button.active{background:#fff;color:var(--ink);border-color:#fff;box-shadow:0 1px 3px rgba(0,0,0,.2)}
+.succ-card.r1 .succ-fit-buttons button{color:rgba(0,0,0,.8);background:rgba(0,0,0,.06);border-color:rgba(0,0,0,.14)}
+.succ-card.r1 .succ-fit-buttons button:hover{background:rgba(0,0,0,.12);border-color:rgba(0,0,0,.24)}
+.succ-card.r1 .succ-fit-buttons button.active{background:var(--ink);color:#fff;border-color:var(--ink)}
+/* Info tip variant inside a coloured successor card */
+.succ-fit-lbl .info-tip{background:rgba(255,255,255,.35);color:rgba(255,255,255,.95)}
+.succ-fit-lbl .info-tip:hover{background:#fff;color:var(--ink)}
+.succ-card.r1 .succ-fit-lbl .info-tip{background:rgba(0,0,0,.18);color:rgba(0,0,0,.85)}
+.succ-card.r1 .succ-fit-lbl .info-tip:hover{background:var(--ink);color:#fff}
+/* Info tip inside dark step-in label — same treatment */
+.crt-stepin .si-lbl .info-tip{background:var(--line-2);color:var(--ink-3)}
+.crt-stepin .si-lbl .info-tip:hover{background:var(--ink-3);color:#fff}
 /* Step-in dropdown inline in first column */
 .crt-stepin{margin-top:6px;font-size:11px}
 .crt-stepin .si-lbl{color:var(--ink-3);font-weight:600;text-transform:uppercase;letter-spacing:.04em;font-size:10px;margin-bottom:2px;display:block}
@@ -388,6 +402,25 @@ main{padding:24px 32px 60px;max-width:1600px;margin:0 auto}
 .succ-fit-derived{font-size:9px;color:rgba(255,255,255,.75);text-align:center;margin-top:2px;font-style:italic}
 .succ-card.r1 .succ-fit-derived{color:rgba(0,0,0,.6)}
 .crt-incumbent b{color:var(--ink-2);font-weight:600}
+/* Info tooltip — small (i) with hover-triggered dark tooltip */
+.info-tip{display:inline-flex;position:relative;cursor:help;color:var(--ink-3);font-size:9px;
+  width:13px;height:13px;background:var(--line-2);border-radius:50%;align-items:center;justify-content:center;
+  font-weight:700;margin-left:4px;font-style:italic;font-family:Georgia,serif;vertical-align:middle}
+.info-tip:hover{background:var(--ink-3);color:#fff}
+.info-tip .info-tip-body{display:none;position:absolute;bottom:calc(100% + 6px);left:50%;transform:translateX(-50%);
+  background:#0B0B0B;color:#fff;padding:8px 10px;border-radius:4px;font-size:11px;font-weight:400;
+  width:240px;line-height:1.45;z-index:60;text-transform:none;letter-spacing:0;text-align:left;
+  font-family:"Helvetica Now Text","Helvetica Neue",sans-serif;font-style:normal;pointer-events:none}
+.info-tip:hover .info-tip-body{display:block}
+.info-tip .info-tip-body::after{content:"";position:absolute;top:100%;left:50%;transform:translateX(-50%);
+  border:5px solid transparent;border-top-color:#0B0B0B}
+.info-tip .info-tip-body b{color:#fff;font-weight:600}
+/* Incumbent chip row inside role cell */
+.crt-role-meta{display:flex;align-items:center;gap:8px;margin-top:5px;flex-wrap:wrap}
+.crt-role-meta .role-fam{font-size:10.5px;color:var(--ink-3);font-weight:500;display:inline-flex;align-items:center;gap:5px}
+.crt-role-meta .role-fam .fam-dot{width:8px;height:8px;border-radius:50%;display:inline-block}
+.crt-role-meta .role-lvl{font-size:9.5px;font-weight:700;padding:2px 8px;border-radius:99px;background:var(--navy);color:#fff;letter-spacing:.03em}
+.crt-role-meta .role-tier{font-size:9.5px;font-weight:600;padding:2px 8px;border-radius:99px;background:var(--bg-3);color:var(--ink-2);letter-spacing:.03em}
 .crt-ret-flag{font-size:11px;font-weight:600;margin-top:3px;padding:2px 6px;border-radius:99px;display:inline-block}
 .crt-ret-flag.ret-near{background:#FDF7DB;color:#8A6D00}
 .crt-ret-flag.ret-overdue{background:#FDE4E4;color:#B00019}
@@ -778,6 +811,84 @@ main{padding:24px 32px 60px;max-width:1600px;margin:0 auto}
 .lp-snap-item{background:#fff;padding:14px 16px}
 .lp-snap-item .k{font-size:10px;color:var(--ink-3);text-transform:uppercase;letter-spacing:.06em;font-weight:600}
 .lp-snap-item .v{font-size:13px;font-weight:600;margin-top:4px;color:var(--ink)}
+
+/* Persona badge on hero (secondary to Overall Potential Classification) */
+.lp-persona-hero{padding:10px 14px;background:rgba(255,255,255,.08);border-radius:6px;
+  backdrop-filter:blur(10px);text-align:center;min-width:140px;margin-top:10px}
+.lp-persona-hero .pk{font-size:9px;text-transform:uppercase;letter-spacing:.12em;
+  color:rgba(255,255,255,.6);font-weight:600}
+.lp-persona-hero .pv{font-size:13px;font-weight:600;letter-spacing:-.01em;margin-top:4px;color:#fff}
+/* Leadership Snapshot band — Persona + 9-Box + PMP trajectory */
+.lp-snap-band{display:grid;grid-template-columns:1.4fr 1fr 1.2fr;gap:14px;margin-bottom:24px}
+.lp-snap-card{background:#fff;border:1px solid var(--line);border-radius:8px;padding:18px 20px;
+  position:relative;overflow:hidden}
+.lp-snap-card .lsc-lbl{font-size:10px;color:var(--ink-3);text-transform:uppercase;letter-spacing:.08em;
+  font-weight:600;margin-bottom:10px;display:flex;align-items:center;gap:8px}
+.lp-snap-card .lsc-lbl .info-tip{margin-left:0}
+.lp-snap-card.persona{border-left:4px solid var(--persona-accent, var(--navy))}
+.lp-snap-card.persona .persona-name{font-size:18px;font-weight:600;color:var(--persona-accent, var(--navy));
+  letter-spacing:-.01em;margin-bottom:6px;line-height:1.15}
+.lp-snap-card.persona .persona-body{font-size:11.5px;line-height:1.5;color:var(--ink-2)}
+.lp-snap-card.persona .persona-dims{margin-top:10px;display:flex;gap:6px;flex-wrap:wrap}
+.lp-snap-card.persona .persona-dims span{font-size:9.5px;font-weight:600;background:var(--bg-3);
+  color:var(--ink-2);padding:2px 8px;border-radius:99px;letter-spacing:.02em}
+/* Mini 9-box grid card */
+.lp-snap-card.ninebox .mini-nb{display:grid;grid-template-columns:repeat(3,1fr);gap:3px;
+  aspect-ratio:1/1;max-width:150px;margin:0 auto}
+.lp-snap-card.ninebox .mini-nb-cell{background:var(--bg-2);border-radius:3px;display:flex;
+  align-items:center;justify-content:center;font-size:9px;color:var(--ink-4);font-weight:600;padding:2px}
+.lp-snap-card.ninebox .mini-nb-cell.here{background:var(--navy);color:#fff;box-shadow:0 0 0 2px var(--navy),0 2px 6px rgba(10,54,97,.35);position:relative;z-index:2}
+.lp-snap-card.ninebox .mini-nb-cell.g{background:var(--rn-g-tint);color:#1F7A5C}
+.lp-snap-card.ninebox .mini-nb-cell.y{background:var(--rn-y-tint);color:#8A6B00}
+.lp-snap-card.ninebox .mini-nb-cell.o{background:var(--rn-o-tint);color:#7A3F0F}
+.lp-snap-card.ninebox .mini-nb-cell.r{background:var(--rn-r-tint);color:#B32B2E}
+.lp-snap-card.ninebox .mini-nb-cell.here.g,.lp-snap-card.ninebox .mini-nb-cell.here.y,
+.lp-snap-card.ninebox .mini-nb-cell.here.o,.lp-snap-card.ninebox .mini-nb-cell.here.r{background:var(--navy);color:#fff}
+.lp-snap-card.ninebox .mini-nb-caption{text-align:center;margin-top:10px;font-size:11.5px;color:var(--ink-2);font-weight:600}
+.lp-snap-card.ninebox .mini-nb-axes{font-size:9px;color:var(--ink-4);text-align:center;margin-top:4px;letter-spacing:.02em}
+/* PMP trajectory card */
+.lp-snap-card.pmp .pmp-track{display:flex;align-items:stretch;gap:8px;margin-top:4px}
+.lp-snap-card.pmp .pmp-year{flex:1;background:var(--bg-2);border-radius:5px;padding:9px 6px 10px;
+  text-align:center;position:relative}
+.lp-snap-card.pmp .pmp-year.latest{background:var(--navy);color:#fff}
+.lp-snap-card.pmp .pmp-yr{font-size:9.5px;color:var(--ink-3);font-weight:600;letter-spacing:.04em}
+.lp-snap-card.pmp .pmp-year.latest .pmp-yr{color:rgba(255,255,255,.75)}
+.lp-snap-card.pmp .pmp-code{font-size:15px;font-weight:700;margin-top:3px;letter-spacing:-.01em}
+.lp-snap-card.pmp .pmp-code.op{color:#0F8759}
+.lp-snap-card.pmp .pmp-code.ep{color:#1E5A9F}
+.lp-snap-card.pmp .pmp-code.vgp{color:#8A6D00}
+.lp-snap-card.pmp .pmp-code.nvgp{color:#B00019}
+.lp-snap-card.pmp .pmp-year.latest .pmp-code{color:#fff}
+.lp-snap-card.pmp .pmp-label{font-size:9px;color:var(--ink-3);margin-top:4px;line-height:1.15;font-weight:500}
+.lp-snap-card.pmp .pmp-year.latest .pmp-label{color:rgba(255,255,255,.75)}
+.lp-snap-card.pmp .pmp-arrow{align-self:center;color:var(--ink-4);font-size:14px;font-weight:600}
+.lp-snap-card.pmp .pmp-legend{margin-top:12px;font-size:10.5px;color:var(--ink-3);line-height:1.4;text-align:center}
+.lp-snap-card.pmp .pmp-legend b{color:var(--ink-2)}
+/* Strengths / Development / Derailers 3-column block */
+.lp-sgd{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-bottom:24px}
+.lp-sgd-card{background:#fff;border:1px solid var(--line);border-radius:8px;padding:16px 18px}
+.lp-sgd-card .sgd-hd{font-size:10px;text-transform:uppercase;letter-spacing:.08em;font-weight:700;
+  padding-bottom:10px;margin-bottom:12px;border-bottom:2px solid;display:flex;align-items:center;gap:8px}
+.lp-sgd-card.strength .sgd-hd{border-color:var(--rn-g);color:#1F7A5C}
+.lp-sgd-card.develop  .sgd-hd{border-color:var(--rn-y);color:#8A6B00}
+.lp-sgd-card.derailer .sgd-hd{border-color:var(--rn-r);color:#B32B2E}
+.lp-sgd-item{padding:8px 0;border-bottom:1px dashed var(--line-2)}
+.lp-sgd-item:last-child{border-bottom:none}
+.lp-sgd-item .sgd-name{font-size:12px;font-weight:600;color:var(--ink);display:flex;justify-content:space-between;align-items:center;gap:6px}
+.lp-sgd-item .sgd-name .sgd-score{font-size:11px;font-weight:600;padding:1px 8px;border-radius:99px;background:var(--bg-3);color:var(--ink-2)}
+.lp-sgd-card.strength .sgd-name .sgd-score{background:var(--rn-g-tint);color:#1F7A5C}
+.lp-sgd-card.develop  .sgd-name .sgd-score{background:var(--rn-y-tint);color:#8A6B00}
+.lp-sgd-card.derailer .sgd-name .sgd-score{background:var(--rn-r-tint);color:#B32B2E}
+.lp-sgd-item .sgd-desc{font-size:11px;color:var(--ink-3);line-height:1.45;margin-top:4px}
+/* PMP mini-inline within snapshot grid item */
+.pmp-mini{display:flex;gap:5px;align-items:baseline;margin-top:2px}
+.pmp-mini .m-code{font-size:12px;font-weight:700}
+.pmp-mini .m-code.op{color:#0F8759}
+.pmp-mini .m-code.ep{color:#1E5A9F}
+.pmp-mini .m-code.vgp{color:#8A6D00}
+.pmp-mini .m-code.nvgp{color:#B00019}
+.pmp-mini .m-arrow{color:var(--ink-4);font-size:11px}
+.pmp-mini .m-yr{font-size:9px;color:var(--ink-4);font-weight:500}
 
 /* Role Readiness — modernized */
 .role-readiness-block{background:#fff;border:1px solid var(--line);border-radius:6px;padding:18px 20px;margin-bottom:20px}
@@ -5337,14 +5448,13 @@ function renderSuccRoleTable(){
     });
   }
   const maxSlots = Math.max(...roles.map(r=>r.slots?r.slots.length:r.successors.length));
-  const totalColSpan = 3 + maxSlots; // role + family + level + successors (pool-spread column removed — mini-grids on each card already show the spread)
-  const succW = Math.floor((100 - 24 - 12 - 8) / maxSlots); // even distribution across successor columns
+  const totalColSpan = 1 + maxSlots; // role (with incumbent + family + level all inline) + successors
+  const roleColW = 32; // % width for the Critical role / Incumbent column
+  const succW = Math.floor((100 - roleColW) / maxSlots); // even distribution across successor columns
   let html = `<thead><tr>
-    <th style="width:24%">Critical role</th>
-    <th style="width:12%">Job Family</th>
-    <th class="center" style="width:8%">Level</th>`;
+    <th style="width:${roleColW}%">Critical role &middot; Incumbent</th>`;
   for(let i=1;i<=maxSlots;i++){
-    html += `<th style="width:${succW}%">Successor ${i}</th>`;
+    html += `<th style="width:${succW}%">Successor ${i}<span class="info-tip" style="margin-left:6px" tabindex="0" aria-label="What is Functional Fit?">i<span class="info-tip-body"><b>Functional Fit</b> (L / M / H) on each successor card is the line-leader assessment of how well the named successor matches this specific role's technical / functional requirements today. It combines with Leadership Potential (from GLIDE) to derive the readiness horizon — Ready Now, 1 yr, 2–3 yr, 4+ yr. Captured by the BU / Function Head in the Level&nbsp;1 review.</span></span></th>`;
   }
   html += `</tr></thead><tbody>`;
   let lastFamily = null;
@@ -5373,13 +5483,14 @@ function renderSuccRoleTable(){
     const retNote = overdue ? "\u26A0 Retirement overdue by " + (-yrsToRet) + " yr" + (yrsToRet === -1 ? "" : "s")
                  : nearRet ? "\u26A0 Retires in " + yrsToRet + " yr" + (yrsToRet === 1 ? "" : "s")
                  : "";
-    // Step-in successor picker
+    // Step-in successor picker (with tooltip)
     const stepInLeader = r.stepIn && r.stepIn.leaderId ? STATE.leaders.find(l => l.id === r.stepIn.leaderId) : null;
     const namedIds = new Set((r.slots||[]).map(sl => sl.leaderId));
     const stepInOpts = STATE.leaders.filter(l => !namedIds.has(l.id)).sort((a,b)=>a.name.localeCompare(b.name));
     const stepInMissing = !stepInLeader;
+    const stepInTip = `<span class="info-tip" tabindex="0" aria-label="What is Step-in cover?">i<span class="info-tip-body"><b>Step-in cover</b> is the leader who can hold the role for 3–6 months if the incumbent leaves unexpectedly (illness, resignation, sudden exit). Not the long-term successor — a trusted deputy or peer who can bridge the gap while a permanent successor is confirmed. Every critical role should have one.</span></span>`;
     const stepInHtml = `<div class="crt-stepin ${stepInMissing?'missing':''}" onclick="event.stopPropagation()">
-      <span class="si-lbl">Step-in cover</span>
+      <span class="si-lbl">Step-in cover${stepInTip}</span>
       <select onchange="setStepInInline('${r.id}', this.value)">
         <option value="">— Pick a leader —</option>
         ${stepInOpts.map(l=>`<option value="${l.id}" ${stepInLeader && l.id===stepInLeader.id?'selected':''}>${l.name} · ${l.level}</option>`).join("")}
@@ -5390,17 +5501,22 @@ function renderSuccRoleTable(){
     const successorIds = (r.slots||[]).map(sl=>sl.leaderId).filter(Boolean);
     const compareBtn = successorIds.length >= 2 ?
       `<button class="crt-compare-btn" onclick="event.stopPropagation();compareTheseSuccessors(${JSON.stringify(successorIds).replace(/"/g,'&quot;')})">Compare these ${successorIds.length}</button>` : "";
+    // Inline chip row for Job Family + Level + Tier (replaces the two removed columns)
+    const chipRow = `<div class="crt-role-meta">
+      <span class="role-lvl">${r.cl}</span>
+      <span class="role-tier">Tier ${r.tier}</span>
+      <span class="role-fam"><span class="fam-dot" style="background:${FAMILY_COLORS[r.family]||'#6E6E6E'}"></span>${r.family}</span>
+    </div>`;
     html += `<tr>
       <td onclick="switchView('roles');setTimeout(()=>selectRole('${r.id}'),50)" style="cursor:pointer">
         <div class="crt-role">${r.title}</div>
         <div class="crt-bu">${r.bu}</div>
+        ${chipRow}
         <div class="crt-incumbent ${retClass}">Incumbent: <b>${r.incumbent}</b> · ${r.incumbentAge}${r.incumbentLevel?" · "+r.incumbentLevel:""}</div>
         ${retNote ? `<div class="crt-ret-flag ${retClass}">${retNote}</div>` : ""}
         ${stepInHtml}
         ${compareBtn}
-      </td>
-      <td><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:${FAMILY_COLORS[r.family]||'#6E6E6E'};margin-right:6px;vertical-align:middle"></span>${r.family}</td>
-      <td class="center"><span class="cl-pill">${r.cl}</span></td>`;
+      </td>`;
     for(let i=0;i<maxSlots;i++){
       const sl = slots[i];
       const s = sl ? leaders.find(l=>l.id===sl.leaderId) : null;
@@ -5411,12 +5527,16 @@ function renderSuccRoleTable(){
       const readiness = sl.readiness;
       const frClass = readiness===READINESS[1]?"dark":"";
       const miniMatrix = renderMiniMatrix(s);
-      // Fit buttons — click captures Low/Med/High, propagates to readiness horizon
+      // Fit input — click captures Low/Med/High, propagates to readiness horizon (no auto card reorder)
       const fitKey = sl.fitLevel != null ? ["low","med","high"][sl.fitLevel] : null;
-      const fitBtns = `<div class="succ-fit-buttons" onclick="event.stopPropagation()" title="Rate Fit for this successor (Level 1 review)">
-        <button data-fit="low" class="${fitKey==='low'?'active':''}" onclick="setFitInline('${r.id}',${i},0)">L</button>
-        <button data-fit="med" class="${fitKey==='med'?'active':''}" onclick="setFitInline('${r.id}',${i},1)">M</button>
-        <button data-fit="high" class="${fitKey==='high'?'active':''}" onclick="setFitInline('${r.id}',${i},2)">H</button>
+      const fitTip = `<span class="info-tip" tabindex="0" aria-label="What is Functional Fit?">i<span class="info-tip-body"><b>Functional Fit</b> — how well this successor matches the role's <b>technical / functional</b> requirements today. Captured by the BU or Function Head in the Level&nbsp;1 review. Combined with Leadership Potential to derive readiness horizon.</span></span>`;
+      const fitBtns = `<div class="succ-fit-wrap" onclick="event.stopPropagation()">
+        <div class="succ-fit-lbl">Functional Fit${fitTip}</div>
+        <div class="succ-fit-buttons">
+          <button data-fit="low"  class="${fitKey==='low'?'active':''}"  onclick="setFitInline('${r.id}',${i},0)" title="Low fit">Low</button>
+          <button data-fit="med"  class="${fitKey==='med'?'active':''}"  onclick="setFitInline('${r.id}',${i},1)" title="Medium fit">Med</button>
+          <button data-fit="high" class="${fitKey==='high'?'active':''}" onclick="setFitInline('${r.id}',${i},2)" title="High fit">High</button>
+        </div>
       </div>`;
       const derivedLbl = sl.fitLevel != null ? "→ " + (sl.readiness || readiness) : "";
       html += `<td onclick="openLeader('${s.id}')" style="cursor:pointer" title="Open ${s.name}'s profile"><div class="succ-card ${rClass(readiness)}" title="Readiness: ${readiness}">
@@ -5755,6 +5875,110 @@ function setLeaderRetirementAge(lid, val){
   scheduleAutosave();
   renderLeaderProfile(lid);
 }
+// ---------- Persona / PMP / Strengths derivations (align with Leadership deck framework) ----------
+// Four leadership persona archetypes — used in the 29 July Leadership deck's cohort analysis.
+// Each maps to a signature ADEPT-15 profile: three dimensions that most define the archetype.
+const PERSONA_DEFS = [
+  {
+    key: "innovation",
+    name: "Innovation Leader",
+    dims: ["Conceptual","Ambition","Flexibility"],
+    color: "#2C7BE5",
+    accent: "#E4EEF9",
+    body: "Envisions new possibilities; comfortable with abstraction and long-arc bets. Anchors well in new-vertical creation, adjacent-market entry, and transformation programmes where the outcome is uncertain."
+  },
+  {
+    key: "operational",
+    name: "Operational Leader",
+    dims: ["Structure","Drive","Composure"],
+    color: "#0F8759",
+    accent: "#E4F4EC",
+    body: "Disciplined executor — plan-driven, reliable, calm under load. Anchors well in high-volume delivery, concession execution, and roles where consistency and follow-through matter more than reinvention."
+  },
+  {
+    key: "change",
+    name: "Change Leader",
+    dims: ["Flexibility","Assertiveness","Liveliness"],
+    color: "#8A6D00",
+    accent: "#FDF7DB",
+    body: "Rallies teams through ambiguity — adaptive, energetic, willing to move first. Anchors well in restructures, integration, cross-BU synergy plays, and turnarounds where momentum matters."
+  },
+  {
+    key: "crisis",
+    name: "Crisis Leader",
+    dims: ["Composure","Assertiveness","Power"],
+    color: "#B32B2E",
+    accent: "#FDE4E4",
+    body: "Steady in high-stakes moments — decisive, influential, unrattled. Anchors well in regulatory crises, safety incidents, and JV / stakeholder confrontations where composure carries decisions."
+  }
+];
+function derivePersona(leader){
+  if(!leader.personality) return null;
+  const scored = PERSONA_DEFS.map(p => {
+    const dimScores = p.dims.map(d => leader.personality[d] || 0);
+    const avg = dimScores.reduce((s,v)=>s+v, 0) / dimScores.length;
+    return {...p, score: avg, dimScores};
+  });
+  scored.sort((a,b)=> b.score - a.score);
+  return scored[0];
+}
+// Generate a plausible 3-year PMP trajectory for the illustrative cohort — anchored to nineBoxCol
+// (performance axis in the 9-box grid). Uses GMR's PMP labels: NVGP < VGP < EP < OP.
+// Returns array of {year, code, label}.
+const _PMP_LEVELS = [
+  {code:"NVGP", label:"Needs Very Good Performance"},
+  {code:"VGP",  label:"Very Good Performance"},
+  {code:"EP",   label:"Exceeds Performance"},
+  {code:"OP",   label:"Outstanding Performance"}
+];
+function derivePMPHistory(leader){
+  // Anchor: nineBoxCol 0 = low perf → around VGP; col 1 = mid → around EP; col 2 = high → around EP/OP
+  const col = leader.nineBoxCol != null ? leader.nineBoxCol : 1;
+  const baseIdx = col === 0 ? 1 : col === 1 ? 2 : 2; // VGP or EP baseline
+  // Deterministic jitter per leader so results are stable
+  const seed = (leader.id.charCodeAt(1) || 1) * 13 + (leader.id.charCodeAt(2) || 1) * 7;
+  const jitter = off => ((seed + off * 17) % 100) / 100;
+  // Trajectory shape — most stable, some rising, some falling
+  const j = jitter(1);
+  let idx23, idx24, idx25;
+  if(col === 2){
+    // High performers — rising or stable-high trajectory
+    if(j < 0.35){ idx23 = baseIdx;     idx24 = baseIdx + 1; idx25 = baseIdx + 1; }
+    else if(j < 0.65){ idx23 = baseIdx + 1; idx24 = baseIdx + 1; idx25 = baseIdx + 1; }
+    else{ idx23 = baseIdx - 1; idx24 = baseIdx;     idx25 = baseIdx + 1; }
+  } else if(col === 1){
+    // Mid performers — steady or slightly rising
+    if(j < 0.5){ idx23 = baseIdx; idx24 = baseIdx; idx25 = baseIdx; }
+    else if(j < 0.8){ idx23 = baseIdx - 1; idx24 = baseIdx; idx25 = baseIdx; }
+    else{ idx23 = baseIdx; idx24 = baseIdx + 1; idx25 = baseIdx; }
+  } else {
+    // Low performers — flat or declining
+    if(j < 0.45){ idx23 = baseIdx; idx24 = baseIdx; idx25 = baseIdx; }
+    else if(j < 0.75){ idx23 = baseIdx + 1; idx24 = baseIdx; idx25 = baseIdx - 1; }
+    else{ idx23 = baseIdx; idx24 = baseIdx - 1; idx25 = baseIdx; }
+  }
+  const clamp = i => Math.max(0, Math.min(_PMP_LEVELS.length - 1, i));
+  return [
+    {year: 2023, ..._PMP_LEVELS[clamp(idx23)]},
+    {year: 2024, ..._PMP_LEVELS[clamp(idx24)]},
+    {year: 2025, ..._PMP_LEVELS[clamp(idx25)]}
+  ];
+}
+// Strengths / Development / Derailers from GLIDE PT traits (non-BL) + ADEPT-15 low dimensions
+function deriveStrengthsGapsDerailers(leader){
+  const ptTraits = TRAITS.filter(t => !BUSINESS_LEVERS.includes(t))
+    .map(t => ({trait: t, pt: leader.traits[t].PT, pc: leader.traits[t].PC}))
+    .filter(t => t.pt != null);
+  ptTraits.sort((a,b)=> b.pt - a.pt);
+  const strengths = ptTraits.slice(0, 3);
+  const development = ptTraits.slice(-2).reverse();
+  // Derailers — bottom 2 ADEPT dimensions (using ADEPT_MAP.low text)
+  const adept = ADEPT.map(d => ({d, v: leader.personality[d]}))
+    .filter(x => x.v != null);
+  adept.sort((a,b)=> a.v - b.v);
+  const derailers = adept.slice(0, 2);
+  return {strengths, development, derailers};
+}
 // Render the expandable per-trait rater-breakdown table under Perception.
 // Uses l.perceptionByRater[trait] = {manager, peer, direct} if available (enriched in generateDemo);
 // falls back to synthesising from l.traits[t].PC if not.
@@ -5862,6 +6086,28 @@ function renderLeaderProfile(lid){
   // Overall experience — GMR tenure + a plausible pre-GMR band (deterministic per leader)
   const preGmr = Math.max(0, Math.floor((l.age||42) - 22 - l.tenure));
   const overallExp = l.tenure + preGmr;
+  // Persona classification (from ADEPT-15 profile)
+  const persona = derivePersona(l);
+  // 3-year PMP history (anchored to nineBoxCol; synthesised for illustrative cohort)
+  const pmpHist = derivePMPHistory(l);
+  // Strengths / Development / Derailers (from GLIDE PT + ADEPT-15 low dimensions)
+  const sgd = deriveStrengthsGapsDerailers(l);
+  // Sector — infer from BU (GMR-specific mapping)
+  const sectorMap = {
+    "GMR Airports":"Airports", "GMR Aero Technic":"Airports (MRO)",
+    "GMR Energy":"Energy", "GMR Highways":"Highways / Infrastructure",
+    "GMR Innovex":"Digital / Innovation", "GMR Sports":"Sports",
+    "GMR Corporate":"Corporate & Enabling"
+  };
+  const sector = sectorMap[l.bu] || l.bu;
+  // Date of Joining — derive from age + tenure (illustrative)
+  const _thisYear = new Date().getFullYear();
+  const dojYear = _thisYear - Math.max(1, Math.round(l.tenure));
+  // Latest PMP + trajectory arrow for the enhanced snapshot row
+  const latestPMP = pmpHist[pmpHist.length - 1];
+  const firstPMP = pmpHist[0];
+  const pmpTrend = _PMP_LEVELS.findIndex(p=>p.code===latestPMP.code) - _PMP_LEVELS.findIndex(p=>p.code===firstPMP.code);
+  const pmpArrow = pmpTrend > 0 ? "↑" : pmpTrend < 0 ? "↓" : "→";
 
   const traitRow = (t)=>{
     const bar = (v)=>{
@@ -5891,9 +6137,15 @@ function renderLeaderProfile(lid){
             <button class="btn" style="background:rgba(255,255,255,.12);color:#fff;border-color:rgba(255,255,255,.25)" onclick="openCompareForLeader('${l.id}')">Compare with…</button>
           </div>
         </div>
-        <div class="lp-verdict">
-          <div class="vk">Overall Potential Classification</div>
-          <div class="vv ${potClassCls}">${potClass}</div>
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <div class="lp-verdict">
+            <div class="vk">Overall Potential Classification</div>
+            <div class="vv ${potClassCls}">${potClass}</div>
+          </div>
+          ${persona ? `<div class="lp-persona-hero" title="${persona.body}">
+            <div class="pk">Leadership Persona</div>
+            <div class="pv">${persona.name}</div>
+          </div>` : ""}
         </div>
       </div>
     </div>
@@ -5930,6 +6182,71 @@ function renderLeaderProfile(lid){
         <div class="exec-body">${summary}</div>
       </div>
 
+      <div class="lp-snap-band">
+        <div class="lp-snap-card persona" style="--persona-accent:${persona?persona.color:'var(--navy)'}">
+          <div class="lsc-lbl">Leadership Persona <span class="info-tip" tabindex="0" aria-label="What is a Leadership Persona?">i<span class="info-tip-body"><b>Leadership Persona</b> is a signature archetype derived from the leader's ADEPT-15 personality profile — matched to the dimensions most characteristic of Innovation, Operational, Change, or Crisis leadership. Persona is <b>not</b> a judgement of capability; it describes where the leader is likely to be at their best. Used at cohort level in the 29 July deck to map bench balance.</span></span></div>
+          ${persona ? `
+          <div class="persona-name">${persona.name}</div>
+          <div class="persona-body">${persona.body}</div>
+          <div class="persona-dims">
+            ${persona.dims.map((d,i)=>`<span>${d} · ${persona.dimScores[i].toFixed(1)}/9</span>`).join("")}
+          </div>` : `<div class="persona-body" style="color:var(--ink-3);font-style:italic">Insufficient ADEPT-15 data to derive persona.</div>`}
+        </div>
+        <div class="lp-snap-card ninebox">
+          <div class="lsc-lbl">9-Box Position <span class="info-tip" tabindex="0" aria-label="What is the 9-Box?">i<span class="info-tip-body"><b>9-Box Grid</b> plots Performance (horizontal) × Potential (vertical). Position determines Future Readiness classification and drives development / succession decisions. Top-right = Future Leader; bottom-left = Under-performer.</span></span></div>
+          <div class="mini-nb">
+            ${[0,1,2].map(rr => [0,1,2].map(cc => {
+              const isHere = rr === l.nineBoxRow && cc === l.nineBoxCol;
+              const label = NINEBOX_ZONES[rr][cc];
+              const bg = _PALETTE_NB[rr][cc];
+              // Choose text colour for contrast on tinted background
+              const tintStyle = isHere ? "" : `style="background:${bg}33;color:${bg === '#6BC9A6' ? '#1F7A5C' : bg === '#F5CE3E' ? '#8A6B00' : bg === '#F5A45A' ? '#7A3F0F' : bg === '#EF4B4E' ? '#B32B2E' : '#1E5A9F'}"`;
+              return `<div class="mini-nb-cell ${isHere?'here':''}" ${tintStyle} title="${label}">${isHere ? "★" : ""}</div>`;
+            }).join("")).join("")}
+          </div>
+          <div class="mini-nb-caption">${l.nineBox}</div>
+          <div class="mini-nb-axes">↑ Potential · Performance →</div>
+        </div>
+        <div class="lp-snap-card pmp">
+          <div class="lsc-lbl">Performance (PMP) · 3-year trajectory <span class="info-tip" tabindex="0" aria-label="What are the PMP codes?">i<span class="info-tip-body"><b>PMP</b> is GMR's annual performance rating.<br><b>OP</b> — Outstanding Performance<br><b>EP</b> — Exceeds Performance<br><b>VGP</b> — Very Good Performance<br><b>NVGP</b> — Needs Very Good Performance</span></span></div>
+          <div class="pmp-track">
+            ${pmpHist.map((p,i)=>`
+              ${i>0?`<div class="pmp-arrow">→</div>`:""}
+              <div class="pmp-year ${i===pmpHist.length-1?'latest':''}">
+                <div class="pmp-yr">${p.year}</div>
+                <div class="pmp-code ${p.code.toLowerCase()}">${p.code}</div>
+                <div class="pmp-label">${p.label}</div>
+              </div>
+            `).join("")}
+          </div>
+          <div class="pmp-legend">3-year trend: <b>${pmpTrend > 0 ? "Rising" : pmpTrend < 0 ? "Declining" : "Steady"}</b> ${pmpArrow}</div>
+        </div>
+      </div>
+
+      <div class="lp-sgd">
+        <div class="lp-sgd-card strength">
+          <div class="sgd-hd">Signature Strengths <span style="margin-left:auto;font-size:9px;color:var(--ink-4);letter-spacing:0;text-transform:none;font-weight:500">from GLIDE Potential</span></div>
+          ${sgd.strengths.map(s => `<div class="lp-sgd-item">
+            <div class="sgd-name">${s.trait}<span class="sgd-score">${s.pt.toFixed(1)}/5</span></div>
+            <div class="sgd-desc">${TRAIT_STRATEGIC_ANCHOR[s.trait] || ""}</div>
+          </div>`).join("")}
+        </div>
+        <div class="lp-sgd-card develop">
+          <div class="sgd-hd">Development Areas <span style="margin-left:auto;font-size:9px;color:var(--ink-4);letter-spacing:0;text-transform:none;font-weight:500">from GLIDE Potential</span></div>
+          ${sgd.development.map(d => `<div class="lp-sgd-item">
+            <div class="sgd-name">${d.trait}<span class="sgd-score">${d.pt.toFixed(1)}/5</span></div>
+            <div class="sgd-desc">${TRAIT_STRATEGIC_ANCHOR[d.trait] || ""}</div>
+          </div>`).join("")}
+        </div>
+        <div class="lp-sgd-card derailer">
+          <div class="sgd-hd">Watch-outs / Derailers <span style="margin-left:auto;font-size:9px;color:var(--ink-4);letter-spacing:0;text-transform:none;font-weight:500">from ADEPT-15</span></div>
+          ${sgd.derailers.map(d => `<div class="lp-sgd-item">
+            <div class="sgd-name">${d.d}<span class="sgd-score">${d.v.toFixed(1)}/9</span></div>
+            <div class="sgd-desc">${(ADEPT_MAP[d.d] && ADEPT_MAP[d.d].low) || ""}</div>
+          </div>`).join("")}
+        </div>
+      </div>
+
       <div class="lp-target-roles">
         <div class="lp-target-hd">
           <div class="lp-target-title">Succession Readiness — by target role</div>
@@ -5956,18 +6273,29 @@ function renderLeaderProfile(lid){
         <div class="lp-snap-item"><div class="k">Current role</div><div class="v">${l.role}</div></div>
         <div class="lp-snap-item"><div class="k">Target role</div><div class="v">${l.aspiration}</div></div>
         <div class="lp-snap-item"><div class="k">Business Unit</div><div class="v">${l.bu}</div></div>
+        <div class="lp-snap-item"><div class="k">Sector</div><div class="v">${sector}</div></div>
         <div class="lp-snap-item"><div class="k">Function</div><div class="v">${l.function}</div></div>
         <div class="lp-snap-item"><div class="k">Country / Location</div><div class="v">${l.country}</div></div>
         <div class="lp-snap-item"><div class="k">Manager</div><div class="v">${l.manager}</div></div>
-        <div class="lp-snap-item"><div class="k">Tenure (within GMR)</div><div class="v">${l.tenure} years</div></div>
+        <div class="lp-snap-item"><div class="k">Date of Joining</div><div class="v">${dojYear} <span style="color:var(--ink-3);font-weight:500;font-size:11px">· ${l.tenure} yrs at GMR</span></div></div>
         <div class="lp-snap-item"><div class="k">Overall Experience</div><div class="v">${overallExp} years <span style="color:var(--ink-3);font-weight:500;font-size:11px">· ${preGmr} yrs pre-GMR</span></div></div>
-        <div class="lp-snap-item"><div class="k">Performance (last cycle)</div><div class="v">${l.performance}</div></div>
+        <div class="lp-snap-item"><div class="k">Performance (PMP)</div><div class="v">
+          <div class="pmp-mini">
+            <span class="m-code ${firstPMP.code.toLowerCase()}">${firstPMP.code}</span><span class="m-yr">${firstPMP.year}</span>
+            <span class="m-arrow">→</span>
+            <span class="m-code ${pmpHist[1].code.toLowerCase()}">${pmpHist[1].code}</span><span class="m-yr">${pmpHist[1].year}</span>
+            <span class="m-arrow">→</span>
+            <span class="m-code ${latestPMP.code.toLowerCase()}">${latestPMP.code}</span><span class="m-yr">${latestPMP.year}</span>
+          </div>
+        </div></div>
         <div class="lp-snap-item"><div class="k">Age</div><div class="v">${l.age||"—"} yrs${l.age?` <span style="color:var(--ink-3);font-weight:500;font-size:11px">· ${l.age<40?"Under 40":l.age<=50?"40–50":l.age<=60?"51–60":"61–70"}</span>`:""}</div></div>
         <div class="lp-snap-item"><div class="k">Retirement age</div><div class="v">
           <span class="lp-ret-edit"><input type="number" min="55" max="75" value="${l.retirementAge||60}" onchange="setLeaderRetirementAge('${l.id}', this.value)" title="Editable per leader — default 60"/><span class="yr-lbl">yrs</span>${l.age && (l.retirementAge||60) - l.age <= 3 ? `<span class="yr-flag">⚠ ${(l.retirementAge||60) - l.age >= 0 ? "in " + ((l.retirementAge||60) - l.age) + " yr" + ((l.retirementAge||60) - l.age === 1 ? "" : "s") : "overdue"}</span>` : ""}</span>
         </div></div>
         <div class="lp-snap-item"><div class="k">Flight Risk</div><div class="v">${l.flightRisk}</div></div>
         <div class="lp-snap-item"><div class="k">Openness to Relocate</div><div class="v">${l.openRelocate?'Willing':'Limited'}</div></div>
+        <div class="lp-snap-item"><div class="k">Leadership Persona</div><div class="v">${persona ? persona.name : "—"}</div></div>
+        <div class="lp-snap-item"><div class="k">9-Box Position</div><div class="v">${l.nineBox}</div></div>
       </div>
 
       <div class="scores-grid">
