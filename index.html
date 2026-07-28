@@ -426,6 +426,12 @@ main{padding:24px 32px 60px;max-width:1600px;margin:0 auto}
 .crt-stepin select{width:100%;padding:4px 6px;font-size:11px;border:1px solid var(--line);border-radius:3px;font-family:inherit;background:#fff;color:var(--ink)}
 .crt-stepin.missing select{border-color:var(--aon-red);background:#FDE4E4}
 .crt-stepin .si-warn{color:var(--aon-red);font-size:10px;font-weight:600;margin-top:3px;display:block}
+/* Auto step-in (when Ready-Now successor exists — no separate ask, just informational) */
+.crt-stepin.auto .si-auto{display:block;padding:5px 8px;background:#E7EEEF;border-left:2px solid var(--teal);
+  border-radius:3px;color:var(--ink);font-size:11px;line-height:1.4}
+.crt-stepin.auto .si-auto b{color:var(--ink);font-weight:600}
+.crt-stepin.auto .si-auto-tag{color:var(--teal);font-size:9.5px;font-weight:600;text-transform:uppercase;
+  letter-spacing:.04em;margin-left:6px}
 /* Compare launcher on row */
 .crt-compare-btn{background:#F7F8F9;border:1px solid var(--line);color:var(--ink-2);
   padding:4px 10px;font-size:10px;font-weight:600;border-radius:99px;cursor:pointer;
@@ -465,9 +471,9 @@ main{padding:24px 32px 60px;max-width:1600px;margin:0 auto}
 .crt-role-meta .role-fam .fam-dot{width:8px;height:8px;border-radius:50%;display:inline-block}
 .crt-role-meta .role-lvl{font-size:9.5px;font-weight:700;padding:2px 8px;border-radius:99px;background:var(--navy);color:#fff;letter-spacing:.03em}
 .crt-role-meta .role-tier{font-size:9.5px;font-weight:600;padding:2px 8px;border-radius:99px;background:var(--bg-3);color:var(--ink-2);letter-spacing:.03em}
-.crt-ret-flag{font-size:11px;font-weight:600;margin-top:3px;padding:2px 6px;border-radius:99px;display:inline-block}
-.crt-ret-flag.ret-near{background:#FDF7DB;color:#8A6D00}
-.crt-ret-flag.ret-overdue{background:#FDE4E4;color:#B00019}
+.crt-ret-flag{font-size:11px;font-weight:600;margin-top:3px;padding:2px 8px;border-radius:99px;display:inline-block}
+.crt-ret-flag.ret-near{background:#FDF7DB;color:#8A6D00}      /* near-60: soft amber, informational */
+.crt-ret-flag.ret-overdue{background:#E7EEEF;color:#214C76}   /* past-60 extension: navy-on-teal, factual (was red-alarm) */
 .crt-incumbent.ret-near b, .crt-incumbent.ret-overdue b{color:var(--ink)}
 .succ-card.rn{background:var(--rn-g)}
 .succ-card.r1{background:var(--rn-y);color:#5A4400}
@@ -801,8 +807,9 @@ main{padding:24px 32px 60px;max-width:1600px;margin:0 auto}
 .lp-facts-strip .lpf-v.y{color:#8A6B00}
 .lp-facts-strip .lpf-v.r{color:#B32B2E}
 .lp-facts-strip .lpf-sep{width:1px;height:14px;background:var(--line-2)}
-.lp-facts-strip .lpf-warn{background:var(--rn-r-tint);color:#B32B2E;padding:3px 10px;border-radius:99px;
-  font-size:11px;font-weight:700;display:inline-flex;align-items:center;gap:4px}
+.lp-facts-strip .lpf-warn{background:#FDF7DB;color:#8A6D00;padding:3px 10px;border-radius:99px;
+  font-size:11px;font-weight:600;display:inline-flex;align-items:center;gap:4px}
+.lp-facts-strip .lpf-warn.ext{background:#E7EEEF;color:#214C76}   /* past-60 extension variant: navy on teal */
 .lp-facts-strip .lpf-expand{margin-left:auto;background:transparent;border:1px solid var(--line);
   padding:5px 12px;font-size:11px;color:var(--ink-2);border-radius:99px;cursor:pointer;font-family:inherit;
   font-weight:500;display:inline-flex;align-items:center;gap:5px;transition:all .12s}
@@ -1148,7 +1155,7 @@ main{padding:24px 32px 60px;max-width:1600px;margin:0 auto}
 .lp-ret-edit{display:inline-flex;align-items:center;gap:6px;background:#F7F8F9;padding:4px 8px;border-radius:4px;font-size:11px;font-weight:600;color:var(--ink-2)}
 .lp-ret-edit input{width:44px;text-align:center;padding:2px 4px;border:1px solid var(--line);border-radius:3px;font-size:12px;font-weight:600;font-family:inherit;color:var(--ink)}
 .lp-ret-edit .yr-lbl{color:var(--ink-3);font-size:10px}
-.lp-ret-edit .yr-flag{font-size:10px;font-weight:700;color:var(--aon-red);margin-left:4px}
+.lp-ret-edit .yr-flag{font-size:10px;font-weight:600;color:#8A6D00;margin-left:4px}   /* was aon-red; softened to amber to match retirement-flag treatment elsewhere */
 .score-tile{background:#fff;border:1px solid var(--line);border-radius:6px;padding:18px;
   position:relative;overflow:hidden}
 .score-tile .st-lbl{font-size:10px;color:var(--ink-3);text-transform:uppercase;letter-spacing:.06em;font-weight:600;margin-bottom:8px}
@@ -2467,22 +2474,23 @@ body.has-fullscreen .fs-nav-bar{display:flex}
   <h2 class="fw-section-hd" id="fw-role-health-hd">Role Health calculation</h2>
   <div class="fw-card" style="max-width:none">
     <div class="fw-body">
-      <p>Every critical role is categorised into one of four health states, based on the depth of the successor bench <b>and</b> whether a step-in successor has been named for business continuity.</p>
+      <p>Every critical role is categorised into one of four health states, based on the depth of the successor bench <b>and</b> whether step-in cover is in place for business continuity.</p>
+      <p style="font-style:italic;color:var(--ink-3);font-size:12px;margin:6px 0 12px">Step-in cover is considered present if <b>either</b> a Ready-Now successor is named on the role (they are the implicit step-in — no separate ask) <b>or</b> an explicit step-in has been captured via the Level 1 picker.</p>
       <table style="width:100%;border-collapse:collapse;font-size:12px;margin-top:10px">
         <thead>
           <tr style="background:#F1F2F3">
             <th style="text-align:left;padding:8px 10px;font-weight:600;color:var(--ink)">Base state</th>
             <th style="text-align:left;padding:8px 10px;font-weight:600;color:var(--ink)">Criteria</th>
-            <th style="text-align:left;padding:8px 10px;font-weight:600;color:var(--ink)">Step-in named?</th>
+            <th style="text-align:left;padding:8px 10px;font-weight:600;color:var(--ink)">Step-in cover?</th>
             <th style="text-align:left;padding:8px 10px;font-weight:600;color:var(--ink)">Final</th>
           </tr>
         </thead>
         <tbody>
-          <tr><td style="padding:6px 10px"><b style="color:#0F8759">Healthy</b></td><td style="padding:6px 10px">Ready-Now successor + depth of ≥ 2</td><td style="padding:6px 10px">Yes</td><td style="padding:6px 10px"><b style="color:#0F8759">Healthy</b></td></tr>
-          <tr><td style="padding:6px 10px"><b style="color:#0F8759">Healthy</b></td><td style="padding:6px 10px">Ready-Now successor + depth of ≥ 2</td><td style="padding:6px 10px">No</td><td style="padding:6px 10px"><b style="color:#8A6D00">Watch</b> <span style="color:var(--ink-3);font-size:11px">(business continuity risk)</span></td></tr>
-          <tr><td style="padding:6px 10px"><b style="color:#8A6D00">Watch</b></td><td style="padding:6px 10px">Ready-Now but only 1 name; or best is Ready-in-1yr</td><td style="padding:6px 10px">Yes</td><td style="padding:6px 10px"><b style="color:#8A6D00">Watch</b></td></tr>
-          <tr><td style="padding:6px 10px"><b style="color:#8A6D00">Watch</b></td><td style="padding:6px 10px">Ready-Now but only 1 name; or best is Ready-in-1yr</td><td style="padding:6px 10px">No</td><td style="padding:6px 10px"><b style="color:#A85A00">At-risk</b></td></tr>
-          <tr><td style="padding:6px 10px"><b style="color:#A85A00">At-risk</b></td><td style="padding:6px 10px">Best successor is Ready-in-2–3 years</td><td style="padding:6px 10px">Either</td><td style="padding:6px 10px"><b style="color:#A85A00">At-risk</b> <span style="color:var(--ink-3);font-size:11px">(step-in absence implicit)</span></td></tr>
+          <tr><td style="padding:6px 10px"><b style="color:#0F8759">Healthy</b></td><td style="padding:6px 10px">Ready-Now successor + depth of ≥ 2</td><td style="padding:6px 10px">Yes <span style="color:var(--ink-3);font-size:11px">(auto — Ready-Now covers)</span></td><td style="padding:6px 10px"><b style="color:#0F8759">Healthy</b></td></tr>
+          <tr><td style="padding:6px 10px"><b style="color:#8A6D00">Watch</b></td><td style="padding:6px 10px">Ready-Now but only 1 name (Ready-Now auto-covers step-in)</td><td style="padding:6px 10px">Yes <span style="color:var(--ink-3);font-size:11px">(auto)</span></td><td style="padding:6px 10px"><b style="color:#8A6D00">Watch</b></td></tr>
+          <tr><td style="padding:6px 10px"><b style="color:#8A6D00">Watch</b></td><td style="padding:6px 10px">Best successor is Ready-in-1yr (no Ready-Now)</td><td style="padding:6px 10px">Yes <span style="color:var(--ink-3);font-size:11px">(explicit)</span></td><td style="padding:6px 10px"><b style="color:#8A6D00">Watch</b></td></tr>
+          <tr><td style="padding:6px 10px"><b style="color:#8A6D00">Watch</b></td><td style="padding:6px 10px">Best successor is Ready-in-1yr (no Ready-Now)</td><td style="padding:6px 10px">No</td><td style="padding:6px 10px"><b style="color:#A85A00">At-risk</b></td></tr>
+          <tr><td style="padding:6px 10px"><b style="color:#A85A00">At-risk</b></td><td style="padding:6px 10px">Best successor is Ready-in-2–3 years</td><td style="padding:6px 10px">Either</td><td style="padding:6px 10px"><b style="color:#A85A00">At-risk</b></td></tr>
           <tr><td style="padding:6px 10px"><b style="color:#B00019">Exposed</b></td><td style="padding:6px 10px">No named successor; or only Ready-in-4+ years</td><td style="padding:6px 10px">Either</td><td style="padding:6px 10px"><b style="color:#B00019">Exposed</b></td></tr>
         </tbody>
       </table>
@@ -2515,7 +2523,7 @@ body.has-fullscreen .fs-nav-bar{display:flex}
         <p><b>What gets captured:</b></p>
         <ul style="padding-left:20px;color:var(--ink-2);font-size:13px;line-height:1.6">
           <li>Functional Fit rating (Low / Med / High) per named successor per role — captured inline on the successor card</li>
-          <li>Step-in successor per role — captured from the picker in the first column</li>
+          <li>Step-in cover per role — auto-assigned to the Ready-Now successor where one exists; otherwise captured from the picker in the first column</li>
           <li>Notes on the role and on individual leaders (via the Leader Profile drill-in)</li>
         </ul>
         <p><b>Output:</b> A calibrated pipeline view per BU or function, with Fit + step-in captured, ready for HR committee sign-off.</p>
@@ -4068,7 +4076,10 @@ function updatePipeProgress(){
     const slots = r.slots || [];
     const health = _pipeClassWithStepIn(r);
     healthCounts[health] = (healthCounts[health]||0) + 1;
-    if(r.stepIn && r.stepIn.leaderId) stepInCount++;
+    // Step-in cover: Ready-Now successor counts as implicit cover (they'd hold the role in a gap);
+    // otherwise an explicit step-in leader must be captured.
+    const hasRNCover = slots.some(sl => sl.readiness === READINESS[0]);
+    if(hasRNCover || (r.stepIn && r.stepIn.leaderId)) stepInCount++;
     const yrsToRet = 60 - (r.incumbentAge || 0);
     if(yrsToRet <= 3){
       const hasRN = slots.some(sl => sl.readiness === READINESS[0]);
@@ -4090,14 +4101,18 @@ function updatePipeProgress(){
 }
 
 // Role health WITH step-in absence penalty:
-//   Healthy → Watch if no step-in named
-//   Watch → At-risk if no step-in named
+//   Healthy → Watch if no step-in cover
+//   Watch → At-risk if no step-in cover
 //   At-risk / Exposed → no further downgrade
+// Step-in cover is present if EITHER a Ready-Now successor exists (implicit cover)
+// OR an explicit step-in leader has been captured.
 function _pipeClassWithStepIn(role){
   const slots = role.slots || [];
   const base = _pipeClassSimple(slots);
-  const hasStepIn = !!(role.stepIn && role.stepIn.leaderId);
-  if(hasStepIn) return base;
+  const hasReadyNow = slots.some(sl => sl.readiness === READINESS[0]);
+  const hasExplicitStepIn = !!(role.stepIn && role.stepIn.leaderId);
+  const hasCover = hasReadyNow || hasExplicitStepIn;
+  if(hasCover) return base;
   if(base === "g") return "a";  // Healthy → Watch
   if(base === "a") return "o";  // Watch → At-risk
   return base;                   // At-risk / Exposed unchanged
@@ -5904,23 +5919,41 @@ function renderSuccRoleTable(){
     const overdue = yrsToRet < 0;
     const nearRet = yrsToRet >= 0 && yrsToRet <= 3;
     const retClass = overdue ? "ret-overdue" : nearRet ? "ret-near" : "";
-    const retNote = overdue ? "\u26A0 Retirement overdue by " + (-yrsToRet) + " yr" + (yrsToRet === -1 ? "" : "s")
-                 : nearRet ? "\u26A0 Retires in " + yrsToRet + " yr" + (yrsToRet === 1 ? "" : "s")
+    // Softer language per client feedback \u2014 retirement is a planning fact, not an alarm.
+    // Incumbents may be in the room during reviews; framing shifted from "overdue" / "\u26A0" to "horizon" / "on extension".
+    const retNote = overdue ? "On extension \u00B7 " + (-yrsToRet) + " yr" + (yrsToRet === -1 ? "" : "s") + " past default retirement"
+                 : nearRet ? "Succession horizon: " + yrsToRet + " yr" + (yrsToRet === 1 ? "" : "s")
                  : "";
-    // Step-in successor picker (with tooltip)
+    // Step-in cover — logic updated per client input (July 2026):
+    //   If any Ready-Now successor exists, they ARE the step-in (no separate ask).
+    //   Only prompt for an explicit step-in when no Ready-Now is named.
+    //   Rationale: someone qualified to take the role permanently in <6 months is by definition
+    //   qualified to hold it for 3-6 months during an unexpected gap. Asking twice is redundant work.
+    const rnSlot = (r.slots||[]).find(sl => sl.readiness === READINESS[0]);   // slots are pre-sorted by readiness rank
+    const rnLeader = rnSlot ? STATE.leaders.find(l => l.id === rnSlot.leaderId) : null;
     const stepInLeader = r.stepIn && r.stepIn.leaderId ? STATE.leaders.find(l => l.id === r.stepIn.leaderId) : null;
-    const namedIds = new Set((r.slots||[]).map(sl => sl.leaderId));
-    const stepInOpts = STATE.leaders.filter(l => !namedIds.has(l.id)).sort((a,b)=>a.name.localeCompare(b.name));
-    const stepInMissing = !stepInLeader;
-    const stepInTip = `<span class="info-tip" tabindex="0" aria-label="What is Step-in cover?">i<span class="info-tip-body"><b>Step-in cover</b> is the leader who can hold the role for 3–6 months if the incumbent leaves unexpectedly (illness, resignation, sudden exit). Not the long-term successor — a trusted deputy or peer who can bridge the gap while a permanent successor is confirmed. Every critical role should have one.</span></span>`;
-    const stepInHtml = `<div class="crt-stepin ${stepInMissing?'missing':''}" onclick="event.stopPropagation()">
-      <span class="si-lbl">Step-in cover${stepInTip}</span>
-      <select onchange="setStepInInline('${r.id}', this.value)">
-        <option value="">— Pick a leader —</option>
-        ${stepInOpts.map(l=>`<option value="${l.id}" ${stepInLeader && l.id===stepInLeader.id?'selected':''}>${l.name} · ${l.level}</option>`).join("")}
-      </select>
-      ${stepInMissing ? `<span class="si-warn">⚠ None named — business continuity risk</span>` : ""}
-    </div>`;
+    const stepInTip = `<span class="info-tip" tabindex="0" aria-label="What is Step-in cover?">i<span class="info-tip-body"><b>Step-in cover</b> is the leader who can hold the role for 3–6 months if the incumbent leaves unexpectedly (illness, resignation, sudden exit). <b>When a Ready-Now successor is named, they automatically become the step-in</b> — no separate pick required. Only roles without a Ready-Now successor need a distinct step-in (typically a trusted deputy or peer who can bridge the gap while a permanent successor is developed).</span></span>`;
+    let stepInHtml;
+    if (rnLeader) {
+      // Ready-Now exists → they ARE the step-in. Show a compact info line, no picker.
+      stepInHtml = `<div class="crt-stepin auto" onclick="event.stopPropagation()">
+        <span class="si-lbl">Step-in cover${stepInTip}</span>
+        <span class="si-auto"><b>${rnLeader.name}</b> · ${rnLeader.level} <span class="si-auto-tag">auto — from Ready-Now successor</span></span>
+      </div>`;
+    } else {
+      // No Ready-Now → ask for an explicit step-in as before.
+      const namedIds = new Set((r.slots||[]).map(sl => sl.leaderId));
+      const stepInOpts = STATE.leaders.filter(l => !namedIds.has(l.id)).sort((a,b)=>a.name.localeCompare(b.name));
+      const stepInMissing = !stepInLeader;
+      stepInHtml = `<div class="crt-stepin ${stepInMissing?'missing':''}" onclick="event.stopPropagation()">
+        <span class="si-lbl">Step-in cover${stepInTip}</span>
+        <select onchange="setStepInInline('${r.id}', this.value)">
+          <option value="">— Pick a leader —</option>
+          ${stepInOpts.map(l=>`<option value="${l.id}" ${stepInLeader && l.id===stepInLeader.id?'selected':''}>${l.name} · ${l.level}</option>`).join("")}
+        </select>
+        ${stepInMissing ? `<span class="si-warn">⚠ No Ready-Now successor and no step-in named — business continuity risk</span>` : ""}
+      </div>`;
+    }
     // Compare launcher — pre-fills the Compare tab with these successors
     const successorIds = (r.slots||[]).map(sl=>sl.leaderId).filter(Boolean);
     const compareBtn = successorIds.length >= 2 ?
@@ -6715,7 +6748,7 @@ function renderLeaderProfile(lid){
       <span class="lpf-item"><span class="lpf-k">Flight risk</span><span class="lpf-v ${l.flightRisk==='Low'?'g':l.flightRisk==='Medium'?'y':'r'}">${l.flightRisk}</span></span>
       <span class="lpf-sep"></span>
       <span class="lpf-item"><span class="lpf-k">Mobility</span><span class="lpf-v">${l.openRelocate?'Willing':'Limited'}</span></span>
-      ${l.age && 60 - l.age <= 3 ? `<span class="lpf-warn">⚠ ${60 - l.age >= 0 ? "Retires in " + (60 - l.age) + " yr" + (60 - l.age === 1 ? "" : "s") : "Retirement overdue"}</span>` : ""}
+      ${l.age && 60 - l.age <= 3 ? `<span class="lpf-warn${60 - l.age < 0 ? ' ext' : ''}">${60 - l.age >= 0 ? "Succession horizon: " + (60 - l.age) + " yr" + (60 - l.age === 1 ? "" : "s") : "On extension · " + (l.age - 60) + " yr" + (l.age - 60 === 1 ? "" : "s") + " past default"}</span>` : ""}
       <button class="lpf-expand" onclick="document.getElementById('lp-facts-strip').classList.toggle('expanded')">
         View full profile <span class="lpf-chev">▾</span>
       </button>
@@ -6742,7 +6775,7 @@ function renderLeaderProfile(lid){
           </div>
         </div></div>
         <div class="lp-snap-item"><div class="k">Age</div><div class="v">${l.age||"—"} yrs${l.age?` <span style="color:var(--ink-3);font-weight:500;font-size:11px">· ${l.age<40?"Under 40":l.age<=50?"40–50":l.age<=60?"51–60":"61–70"}</span>`:""}</div></div>
-        <div class="lp-snap-item"><div class="k">Retirement age</div><div class="v">60 yrs${l.age && 60 - l.age <= 3 ? ` <span style="color:var(--aon-red);font-size:11px;font-weight:700;margin-left:6px">⚠ ${60 - l.age >= 0 ? "in " + (60 - l.age) + " yr" + (60 - l.age === 1 ? "" : "s") : "overdue"}</span>` : ""}</div></div>
+        <div class="lp-snap-item"><div class="k">Retirement age</div><div class="v">60 yrs${l.age && 60 - l.age <= 3 ? ` <span style="color:${60 - l.age >= 0 ? '#8A6D00' : '#214C76'};font-size:11px;font-weight:600;margin-left:6px">· ${60 - l.age >= 0 ? "horizon " + (60 - l.age) + " yr" + (60 - l.age === 1 ? "" : "s") : "on extension (" + (l.age - 60) + " yr" + (l.age - 60 === 1 ? "" : "s") + " past)"}</span>` : ""}</div></div>
         <div class="lp-snap-item"><div class="k">Flight Risk</div><div class="v">${l.flightRisk}</div></div>
         <div class="lp-snap-item"><div class="k">Openness to Relocate</div><div class="v">${l.openRelocate?'Willing':'Limited'}</div></div>
         <div class="lp-snap-item"><div class="k">Level</div><div class="v">${l.level}</div></div>
@@ -7932,19 +7965,28 @@ function downloadTemplate(){
   XLSX.utils.book_append_sheet(wb, wsLeaders, "Leaders");
 
   // ---------- 3 · Roles sheet ----------
-  const rolesCols = ["RoleID","Title","Family","Tier","CL","BU","Incumbent","IncumbentAge","StepInSuccessorLeaderID","LastReviewed","BusinessContext"];
-  const rSample = STATE.roles.slice(0,5).map(r=>({
-    RoleID: r.id, Title: r.title,
-    Family: r.family||"", Tier: r.tier||"", CL: r.cl||"", BU: r.bu||"",
-    Incumbent: r.incumbent||"—",
-    IncumbentAge: r.incumbentAge||"",
-    StepInSuccessorLeaderID: r.stepIn && r.stepIn.leaderId || "",
-    LastReviewed: "",
-    BusinessContext: ""
-  }));
+  // StepInSuccessorLeaderID: the EFFECTIVE step-in — if a Ready-Now successor is named on the role,
+  // that leader is the implicit step-in (no separate ask). Otherwise it's the explicit stepIn.leaderId.
+  const rolesCols = ["RoleID","Title","Family","Tier","CL","BU","Incumbent","IncumbentAge","StepInSuccessorLeaderID","StepInSource","LastReviewed","BusinessContext"];
+  const rSample = STATE.roles.slice(0,5).map(r=>{
+    const slots = r.slots || [];
+    const rnSlot = slots.find(sl => sl.readiness === READINESS[0]);
+    const effectiveStepInId = rnSlot ? rnSlot.leaderId : (r.stepIn && r.stepIn.leaderId) || "";
+    const stepInSource = rnSlot ? "Ready-Now (auto)" : (r.stepIn && r.stepIn.leaderId ? "Explicit" : "");
+    return {
+      RoleID: r.id, Title: r.title,
+      Family: r.family||"", Tier: r.tier||"", CL: r.cl||"", BU: r.bu||"",
+      Incumbent: r.incumbent||"—",
+      IncumbentAge: r.incumbentAge||"",
+      StepInSuccessorLeaderID: effectiveStepInId,
+      StepInSource: stepInSource,
+      LastReviewed: "",
+      BusinessContext: ""
+    };
+  });
   const wsRoles = XLSX.utils.json_to_sheet(rSample, {header: rolesCols});
   wsRoles["!cols"] = [
-    {wch:10},{wch:36},{wch:26},{wch:6},{wch:6},{wch:20},{wch:22},{wch:12},{wch:22},{wch:14},{wch:60}
+    {wch:10},{wch:36},{wch:26},{wch:6},{wch:6},{wch:20},{wch:22},{wch:12},{wch:22},{wch:18},{wch:14},{wch:60}
   ];
   XLSX.utils.book_append_sheet(wb, wsRoles, "Roles");
 
@@ -8004,7 +8046,8 @@ function downloadTemplate(){
     [""],
     ["ROLES SHEET FIELDS",""],
     ["IncumbentAge", "Integer 30–75 · used for retirement red-flag calculation"],
-    ["StepInSuccessorLeaderID", "LeaderID of the emergency step-in cover · captured during Level 1 review"],
+    ["StepInSuccessorLeaderID", "LeaderID of the effective step-in cover. When a Ready-Now successor exists on the role, they are the implicit step-in (auto); otherwise this is the explicitly captured step-in from the Level 1 picker."],
+    ["StepInSource", "'Ready-Now (auto)' when derived from the Ready-Now successor · 'Explicit' when captured via the picker · blank when no cover named"],
     [""],
     ["SUCCESSORS SHEET FIELDS",""],
     ["FunctionalFitForThisRole", "Low · Med · High · captured live in Level 1 review by BU / Functional head"],
